@@ -17,7 +17,24 @@ void print_str(const char *p) {
 }
 
 void print_dec(unsigned int val) {
+	char buffer[10];
+	int i = 9;
 
+	buffer[i] = '\0';
+	i--;
+
+	if (val == 0) {
+		buffer[i] = '0';
+		i--;
+	} else {
+		while (val > 0 && i >= 0) {
+			buffer[i] = '0' + (val % 10);
+			val /= 10;
+			i--;
+		}
+	}
+
+	print_str(&buffer[i + 1]);
 }
 
 void print_hex(unsigned int val, int digits) {
