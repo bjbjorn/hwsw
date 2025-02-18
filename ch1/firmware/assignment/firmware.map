@@ -55,12 +55,12 @@ Linker script and memory map
                 0x00000c00                        . = ALIGN (0x4)
  FILL mask 0xff
 
-.rodata.str1.4  0x00000c00       0x22
+.rodata.str1.4  0x00000c00       0x28
  .rodata.str1.4
-                0x00000c00       0x22 build/print.o
+                0x00000c00       0x28 build/print.o
                                  0x15 (size before relaxing)
  .rodata.str1.4
-                0x00000c22        0xa build/firmware.o
+                0x00000c28       0x10 build/firmware.o
 
 /DISCARD/
  *(.note*)

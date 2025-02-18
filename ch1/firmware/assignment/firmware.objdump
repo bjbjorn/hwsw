@@ -91,7 +91,7 @@ Disassembly of section .text:
  124:	800006b7          	lui	a3,0x80000
  128:	0005d863          	bge	a1,zero,138 <print_hex+0x28>
  12c:	00001537          	lui	a0,0x1
- 130:	c2050513          	addi	a0,a0,-992 # c20 <main+0xac8>
+ 130:	c0050513          	addi	a0,a0,-1024 # c00 <main+0xaa8>
  134:	f69ff06f          	jal	zero,9c <print_str>
  138:	00b557b3          	srl	a5,a0,a1
  13c:	00f7f793          	andi	a5,a5,15
@@ -118,7 +118,7 @@ Disassembly of section .text:
 Disassembly of section .rodata.str1.4:
 
 00000c00 <.rodata.str1.4>:
- c00:	0000                	.insn	2, 0x
+ c00:	000a                	.insn	2, 0x000a
  c02:	0000                	.insn	2, 0x
  c04:	3130                	.insn	2, 0x3130
  c06:	3332                	.insn	2, 0x3332
@@ -133,4 +133,7 @@ Disassembly of section .rodata.str1.4:
  c1a:	2069                	.insn	2, 0x2069
  c1c:	6465                	.insn	2, 0x6465
  c1e:	7964                	.insn	2, 0x7964
- c20:	000a                	.insn	2, 0x000a
+ c20:	5420                	.insn	2, 0x5420
+ c22:	5345                	.insn	2, 0x5345
+ c24:	3254                	.insn	2, 0x3254
+ c26:	000a                	.insn	2, 0x000a
