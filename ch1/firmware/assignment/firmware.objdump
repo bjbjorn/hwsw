@@ -108,7 +108,7 @@ Disassembly of section .text:
  160:	c1850513          	addi	a0,a0,-1000 # c18 <main+0xac0>
  164:	00112623          	sw	ra,12(sp)
  168:	f35ff0ef          	jal	ra,9c <print_str>
- 16c:	34a00513          	addi	a0,zero,842
+ 16c:	01800513          	addi	a0,zero,24
  170:	f49ff0ef          	jal	ra,b8 <print_dec>
  174:	00c12083          	lw	ra,12(sp)
  178:	00000513          	addi	a0,zero,0
