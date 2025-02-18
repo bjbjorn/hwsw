@@ -17,24 +17,24 @@ void print_str(const char *p) {
 }
 
 void print_dec(unsigned int val) {
-	char buffer[10];
-	int i = 9;
+    char buffer[11]; // Enough to hold the maximum 32-bit unsigned integer value and a null terminator
+    int i = 10;
+    buffer[i] = '\0'; // Null-terminate the string
 
-	buffer[i] = '\0';
-	i--;
+    // Convert the integer to a string using subtraction
+    do {
+        unsigned int temp = val;
+        unsigned int digit = 0;
+        while (temp >= 10) {
+            temp -= 10;
+            digit++;
+        }
+        buffer[--i] = '0' + temp;
+        val = digit;
+    } while (val > 0);
 
-	if (val == 0) {
-		buffer[i] = '0';
-		i--;
-	} else {
-		while (val > 0 && i >= 0) {
-			buffer[i] = '0' + (val % 10);
-			val /= 10;
-			i--;
-		}
-	}
-
-	print_str(&buffer[i + 1]);
+    // Pass the resulting string to print_str
+    print_str(&buffer[i]);
 }
 
 void print_hex(unsigned int val, int digits) {

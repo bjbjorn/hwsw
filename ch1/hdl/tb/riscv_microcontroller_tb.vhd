@@ -20,9 +20,9 @@ entity riscv_microcontroller_tb is
         G_DATA_WIDTH : integer := 32;
         G_DEPTH_LOG2 : integer := 11;
 
-        FNAME_IMEM_INIT_FILE : string := "C:/users/bjorn/School2024-2025/hwswcodesign/ch1/firmware/course_example_2/firmware_imem.hex";
-        FNAME_DMEM_INIT_FILE : string := "C:/users/bjorn/School2024-2025/hwswcodesign/ch1/firmware/course_example_2/firmware_dmem.hex";
-        FNAME_OUT_FILE :       string := "C:/users/bjorn/School2024-2025/hwswcodesign/ch1/firmware/course_example_2/simulation_output.txt"
+        FNAME_IMEM_INIT_FILE : string := "C:/users/bjorn/School2024-2025/hwswcodesign/github/ch1/firmware/assignment/firmware_imem.hex";
+        FNAME_DMEM_INIT_FILE : string := "C:/users/bjorn/School2024-2025/hwswcodesign/github/ch1/firmware/assignment/firmware_dmem.hex";
+        FNAME_OUT_FILE :       string := "C:/users/bjorn/School2024-2025/hwswcodesign/github/ch1/firmware/assignment/simulation_output.txt"
     );
 end entity riscv_microcontroller_tb;
 
