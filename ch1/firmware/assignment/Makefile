@@ -71,5 +71,5 @@ clean:
 	$(RM) $(BINARY) $(OBJECTS) $(OBJECTS_A)
 	$(RM) -f simulation_output.txt
 
-report: s_outputtxt
+report: susr/bin3xt
 	@$(PYTHON) $(TOOLS)/parse_simulation.py $<
