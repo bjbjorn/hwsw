@@ -21,17 +21,11 @@ void print_dec(unsigned int val) {
     int i = 10;
     buffer[i] = '\0'; // Null-terminate the string
 
-    // Convert the integer to a string using subtraction
-    do {
-        unsigned int temp = val;
-        unsigned int digit = 0;
-        while (temp >= 10) {
-            temp -= 10;
-            digit++;
-        }
-        buffer[--i] = '0' + temp;
-        val = digit;
-    } while (val > 0);
+	// Convert the integer to a string using modulo and division
+	do {
+		buffer[--i] = '0' + (val % 10);
+		val /= 10;
+	} while (val > 0);
 
     // Pass the resulting string to print_str
     print_str(&buffer[i]);
