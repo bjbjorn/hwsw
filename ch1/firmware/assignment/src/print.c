@@ -20,7 +20,6 @@ void print_str(const char *p) {
 
 int divide(int dividend, int divisor) {
     if (divisor == 0) {
-        printf("Error: Division by zero!\n");
         return -1;
     }
 
