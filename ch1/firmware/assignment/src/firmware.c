@@ -3,6 +3,7 @@
 int main(void) {
 	unsigned int temp;
 
-	print_str("hoi eddy TEST2\n");
+	print_str("Hello world\n");
 	print_dec(789);
+	print_dec(convert(68));
 }

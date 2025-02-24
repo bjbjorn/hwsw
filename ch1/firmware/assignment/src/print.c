@@ -90,6 +90,6 @@ unsigned int convert(unsigned int x) {
 	}
 	temp = (temp << 2) + temp;
 	result = divide(temp, 9);
-	print_dec(result);
+	// print_dec(result);
 	return result;
 }
