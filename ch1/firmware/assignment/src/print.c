@@ -59,7 +59,6 @@ void print_dec(unsigned int val) {
 	print_str("\n");
 }
 
-
 int getDigit(int base, int number) {
     int digit = 0;
     for (int i = base;i <= number;i += base) ++digit;
