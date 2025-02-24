@@ -41,6 +41,12 @@ int divide(int dividend, int divisor) {
     return sign * quotient;
 }
 
+int getDigit(int base, int number) {
+    int digit = 0;
+    for (int i = base;i <= number;i += base) ++digit;
+    return digit;
+}
+
 void print_dec(unsigned int val) {
 	int leading_zero = 0;
 	for (int i = 10; i > 0; i--) {
@@ -55,12 +61,6 @@ void print_dec(unsigned int val) {
         }
 	}
 	print_str("\n");
-}
-
-int getDigit(int base, int number) {
-    int digit = 0;
-    for (int i = base;i <= number;i += base) ++digit;
-    return digit;
 }
 
 void print_hex(unsigned int val, int digits) {
