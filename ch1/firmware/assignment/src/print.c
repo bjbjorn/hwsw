@@ -7,6 +7,8 @@
 
 #include "print.h"
 
+unsigned int base_lut[] = {0,1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
+
 void print_chr(char ch) {
 	*((volatile unsigned int*)OUTPORT) = ch;
 }
@@ -16,7 +18,30 @@ void print_str(const char *p) {
 		*((volatile unsigned int*)OUTPORT) = *(p++);
 }
 
-unsigned int base_lut[] = {0,1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
+int divide(int dividend, int divisor) {
+    if (divisor == 0) {
+        printf("Error: Division by zero!\n");
+        return -1;
+    }
+
+    int quotient = 0;
+    int sign = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
+
+    unsigned int a = (dividend < 0) ? -dividend : dividend;
+    unsigned int b = (divisor < 0) ? -divisor : divisor;
+
+    while (a >= b) {
+        unsigned int temp = b, multiple = 1;
+        while (a >= (temp << 1) && (temp << 1) > temp) {
+            temp <<= 1;
+            multiple <<= 1;
+        }
+        a -= temp;
+        quotient += multiple;
+    }
+
+    return sign * quotient;
+}
 
 void print_dec(unsigned int val) {
 	int leading_zero = 0;
@@ -58,4 +83,13 @@ void print_hex(unsigned int val, int digits) {
 		*((volatile unsigned int*)OUTPORT) = x;
 	}
 	print_str("\n");
+}
+
+unsigned int convert(unsigned int x) {
+	unsigned int result, temp;
+	temp = x - 32;
+	temp = (temp << 2) + temp;
+	result = divide(temp, 9);
+	print_dec(result);
+	return result;
 }
