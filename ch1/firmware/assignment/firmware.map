@@ -1,7 +1,3 @@
-Archive member included to satisfy reference by file (symbol)
-
-/opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
-                              build/print.o (__udivsi3)
 
 Discarded input sections
 
@@ -13,16 +9,6 @@ Discarded input sections
                 0x00000000       0x1c build/firmware.o
  .riscv.attributes
                 0x00000000       0x1a build/start.o
- .debug_line    0x00000000      0x153 /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
- .debug_line_str
-                0x00000000       0x89 /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
- .debug_info    0x00000000       0x5d /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
- .debug_abbrev  0x00000000       0x28 /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
- .debug_aranges
-                0x00000000       0x20 /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
- .debug_str     0x00000000       0xce /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
- .riscv.attributes
-                0x00000000       0x51 /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
 
 Memory Configuration
 
@@ -34,55 +20,49 @@ RAM              0x00000800         0x00000800         xrw
 Linker script and memory map
 
 
-.text           0x00000000      0x236
+.text           0x00000000      0x1cc
                 0x00000000                        . = 0x0
  *(.init)
  .init          0x00000000       0x90 build/start.o
                 0x00000000                start
  *(.text*)
- .text          0x00000090       0xfc build/print.o
+ .text          0x00000090      0x110 build/print.o
                 0x00000090                print_chr
                 0x0000009c                print_str
                 0x000000b8                print_dec
-                0x00000144                print_hex
- .text          0x0000018c        0x0 build/firmware.o
- .text.startup  0x0000018c       0x2c build/firmware.o
-                0x0000018c                main
- .text          0x000001b8        0x0 build/start.o
- .text          0x000001b8       0x7e /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
-                0x000001b8                __divsi3
-                0x000001c0                __hidden___udivsi3
-                0x000001c0                __udivsi3
-                0x000001ec                __umodsi3
-                0x00000210                __modsi3
+                0x00000138                getDigit
+                0x00000158                print_hex
+ .text          0x000001a0        0x0 build/firmware.o
+ .text.startup  0x000001a0       0x2c build/firmware.o
+                0x000001a0                main
+ .text          0x000001cc        0x0 build/start.o
 
-.data           0x00000800        0x0
+.data           0x00000800       0x2c
                 0x00000000                        . = 0x0
  *(.data)
- .data          0x00000800        0x0 build/print.o
- .data          0x00000800        0x0 build/firmware.o
- .data          0x00000800        0x0 build/start.o
- .data          0x00000800        0x0 /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
+ .data          0x00000800       0x2c build/print.o
+                0x00000800                base_lookup
+ .data          0x0000082c        0x0 build/firmware.o
+ .data          0x0000082c        0x0 build/start.o
 
-.bss            0x00000800        0x0
- .bss           0x00000800        0x0 build/print.o
- .bss           0x00000800        0x0 build/firmware.o
- .bss           0x00000800        0x0 build/start.o
- .bss           0x00000800        0x0 /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(div.o)
+.bss            0x0000082c        0x0
+ .bss           0x0000082c        0x0 build/print.o
+ .bss           0x0000082c        0x0 build/firmware.o
+ .bss           0x0000082c        0x0 build/start.o
 
-.rodata         0x00000800      0x400
+.rodata         0x0000082c      0x400
                 0x00000400                        . = 0x400
- *fill*         0x00000800      0x400 
+ *fill*         0x0000082c      0x400 
  *(.rodata)
-                0x00000c00                        . = ALIGN (0x4)
+                0x00000c2c                        . = ALIGN (0x4)
  FILL mask 0xff
 
-.rodata.str1.4  0x00000c00       0x28
+.rodata.str1.4  0x00000c2c       0x34
  .rodata.str1.4
-                0x00000c00       0x28 build/print.o
-                                 0x15 (size before relaxing)
+                0x00000c2c       0x34 build/print.o
+                                 0x21 (size before relaxing)
  .rodata.str1.4
-                0x00000c28       0x10 build/firmware.o
+                0x00000c60       0x10 build/firmware.o
 
 /DISCARD/
  *(.note*)
