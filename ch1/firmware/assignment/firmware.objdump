@@ -128,7 +128,7 @@ Disassembly of section .text:
  1a8:	c5050513          	addi	a0,a0,-944 # c50 <base_lookup+0x450>
  1ac:	00112623          	sw	ra,12(sp)
  1b0:	eedff0ef          	jal	ra,9c <print_str>
- 1b4:	0f400513          	addi	a0,zero,244
+ 1b4:	12000513          	addi	a0,zero,288
  1b8:	f01ff0ef          	jal	ra,b8 <print_dec>
  1bc:	00c12083          	lw	ra,12(sp)
  1c0:	00000513          	addi	a0,zero,0
