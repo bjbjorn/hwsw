@@ -20,7 +20,7 @@ unsigned int base_lut[] = {0,1,10,100,1000,10000,100000,1000000,10000000,1000000
 
 void print_dec(unsigned int val) {
 	int leading_zero = 0;
-	for (int i = 10; i >= 0; i--) {
+	for (int i = 10; i > 0; i--) {
 		int digit = getDigit(base_lut[i],val);
 		if (digit != 0 || leading_zero != 0) {
 			leading_zero = 1;
@@ -34,21 +34,6 @@ void print_dec(unsigned int val) {
 	print_str("\n");
 }
 
-
-// void print_dec(unsigned int val) {
-//     char buffer[11]; // Enough to hold the maximum 32-bit unsigned integer value and a null terminator
-//     int i = 10;
-//     buffer[i] = '\0'; // Null-terminate the string
-
-// 	// Convert the integer to a string using modulo and division
-// 	do {
-// 		buffer[--i] = '0' + (val % 10);
-// 		val /= 10;
-// 	} while (val > 0);
-
-//     // Pass the resulting string to print_str
-//     print_str(&buffer[i]);
-// }
 
 int getDigit(int base, int number) {
     int digit = 0;
