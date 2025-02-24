@@ -44,8 +44,8 @@ Linker script and memory map
                 0x00000090                print_chr
                 0x0000009c                print_str
                 0x000000b8                divide
-                0x0000013c                print_dec
-                0x000001bc                getDigit
+                0x0000013c                getDigit
+                0x0000015c                print_dec
                 0x000001dc                print_hex
                 0x00000224                convert
  .text          0x00000260        0x0 build/firmware.o
