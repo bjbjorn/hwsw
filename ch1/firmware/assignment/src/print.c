@@ -38,7 +38,6 @@ int divide(int dividend, int divisor) {
         a -= temp;
         quotient += multiple;
     }
-
     return sign * quotient;
 }
 
@@ -86,6 +85,9 @@ void print_hex(unsigned int val, int digits) {
 unsigned int convert(unsigned int x) {
 	unsigned int result, temp;
 	temp = x - 32;
+	if (temp < 0) {
+		temp = 0;
+	}
 	temp = (temp << 2) + temp;
 	result = divide(temp, 9);
 	print_dec(result);
