@@ -16,30 +16,24 @@ void print_str(const char *p) {
 		*((volatile unsigned int*)OUTPORT) = *(p++);
 }
 
-unsigned int base_lookup[] = {0,1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
+unsigned int base_lut[] = {0,1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000};
 
 void print_dec(unsigned int val) {
-    char leading_0_flag = 0;
-    for (int i = 10; i > 0; i--)
-    {
-        //print_str("i: ");
-        //print_hex(i,8);
-        //print_str("\n");
-        int index = getDigit(base_lookup[i],val);
-        if (index != 0 || leading_0_flag != 0)
-        {
-            leading_0_flag = 1;
-            char x="0123456789"[index];
+	int leading_zero = 0;
+	for (int i = 10; i >= 0; i--) {
+		int digit = getDigit(base_lut[i],val);
+		if (digit != 0 || leading_zero != 0) {
+			leading_zero = 1;
+			char x="0123456789"[digit];
 			print_chr(x);
-            //*((volatile unsigned int*)OUTPORT) = x;
+		}
+        for (int j = 0; j < digit; j++){
+            val -= base_lut[i];
         }
-        for (int j = 0; j < index; j++){
-            val -= base_lookup[i];
-        }
-    }
-    print_str("\n");
-    return;
+	}
+	print_str("\n");
 }
+
 
 // void print_dec(unsigned int val) {
 //     char buffer[11]; // Enough to hold the maximum 32-bit unsigned integer value and a null terminator
