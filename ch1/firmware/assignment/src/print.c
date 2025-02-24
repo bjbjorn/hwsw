@@ -30,7 +30,8 @@ void print_dec(unsigned int val) {
         {
             leading_0_flag = 1;
             char x="0123456789"[index];
-            *((volatile unsigned int*)OUTPORT) = x;
+			print_chr(x);
+            //*((volatile unsigned int*)OUTPORT) = x;
         }
         for (int j = 0; j < index; j++){
             val -= base_lookup[i];
@@ -38,20 +39,6 @@ void print_dec(unsigned int val) {
     }
     print_str("\n");
     return;
-}
-int getDigit(int base, int number) {
-    //print_str("number: ");
-    //print_hex(number,8);
-    //print_str("\n");
-    //print_str("base: ");
-    //print_hex(base,8);
-    //print_str("\n");
-    int digit = 0;
-    for (int i = base;i <= number;i += base) ++digit;
-    //print_str("digit: ");
-    //print_hex(digit,1);
-    //print_str("\n");
-    return digit;
 }
 
 // void print_dec(unsigned int val) {
@@ -68,6 +55,12 @@ int getDigit(int base, int number) {
 //     // Pass the resulting string to print_str
 //     print_str(&buffer[i]);
 // }
+
+int getDigit(int base, int number) {
+    int digit = 0;
+    for (int i = base;i <= number;i += base) ++digit;
+    return digit;
+}
 
 void print_hex(unsigned int val, int digits) {
 	unsigned int index, max;

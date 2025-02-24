@@ -3,5 +3,5 @@
 int main(void) {
 
 	print_str("hoi eddy TEST2\n");
-	print_dec(244);
+	print_dec(288);
 }
