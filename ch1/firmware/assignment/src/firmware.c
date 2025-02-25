@@ -7,7 +7,7 @@ int main(void) {
 
 	// print_str("Hello world\n");
 	// print_dec(457);
-	temp = convert(68);
+	temp = convert(593);
 	print_dec(temp);
 }
 
