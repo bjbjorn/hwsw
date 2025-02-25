@@ -82,14 +82,3 @@ void print_hex(unsigned int val, int digits) {
 	print_str("\n");
 }
 
-unsigned int convert(unsigned int x) {
-	unsigned int result, temp;
-	temp = x - 32;
-	if (temp < 0) {
-		temp = 0;
-	}
-	temp = (temp << 2) + temp;
-	result = divide(temp, 9);
-	// print_dec(result);
-	return result;
-}
