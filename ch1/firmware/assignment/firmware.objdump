@@ -156,7 +156,7 @@ Disassembly of section .text:
 
 00000210 <main>:
  210:	ff010113          	addi	sp,sp,-16 # ff0 <base_lut+0x7f0>
- 214:	04400513          	addi	a0,zero,68
+ 214:	25100513          	addi	a0,zero,593
  218:	00112623          	sw	ra,12(sp)
  21c:	fe1ff0ef          	jal	ra,1fc <convert>
  220:	eb9ff0ef          	jal	ra,d8 <print_dec>
