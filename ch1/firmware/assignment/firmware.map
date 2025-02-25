@@ -1,7 +1,7 @@
 Archive member included to satisfy reference by file (symbol)
 
 /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a(muldi3.o)
-                              build/print.o (__mulsi3)
+                              build/firmware.o (__mulsi3)
 
 Discarded input sections
 
@@ -40,14 +40,14 @@ Linker script and memory map
  .init          0x00000000       0x90 build/start.o
                 0x00000000                start
  *(.text*)
- .text          0x00000090      0x194 build/print.o
+ .text          0x00000090      0x110 build/print.o
                 0x00000090                print_chr
                 0x0000009c                print_str
-                0x000000b8                divide
-                0x0000013c                getDigit
-                0x0000015c                print_dec
-                0x000001dc                print_hex
- .text          0x00000224       0x14 build/firmware.o
+                0x000000b8                getDigit
+                0x000000d8                print_dec
+                0x00000158                print_hex
+ .text          0x000001a0       0x98 build/firmware.o
+                0x000001a0                divide
                 0x00000224                convert
  .text.startup  0x00000238       0x38 build/firmware.o
                 0x00000238                main
