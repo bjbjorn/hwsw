@@ -11,6 +11,7 @@ int main(void) {
 	print_dec(temp);
 }
 
+
 int divide(int dividend, int divisor) {
     if (divisor == 0) {
         return -1;
@@ -36,12 +37,25 @@ int divide(int dividend, int divisor) {
 
 unsigned int convert(unsigned int x) {
 	unsigned int result, temp, temp2;
+	print_str("Converting ");
 	temp = x - 32;
+	print_str("temp: ");
+	print_dec(temp);
+	print_str("\n");
 	if (temp < 0) {
 		temp = 0;
 	}
+	print_str("temp: ");
+	print_dec(temp);
+	print_str("\n");
 	temp2 = (temp << 2) + temp;
+	print_str("temp2: ");
+	print_dec(temp2);
+	print_str("\n");
 	result = divide(temp2, 9);
+	print_str("result: ");
+	print_dec(result);
+	print_str("\n");
 	// print_dec(result);
 	return result;
 }

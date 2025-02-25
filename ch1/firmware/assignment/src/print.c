@@ -58,4 +58,3 @@ void print_hex(unsigned int val, int digits) {
 	}
 	print_str("\n");
 }
-
