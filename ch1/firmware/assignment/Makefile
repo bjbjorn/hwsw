@@ -72,4 +72,4 @@ clean:
 	$(RM) -f simulation_output.txt
 
 report: simulation_output.txt
-	@$(PTOOLS)/parse_simulation.py $<
+	@$(PYTHON) $(TOOLS)/parse_simulation.py $<
