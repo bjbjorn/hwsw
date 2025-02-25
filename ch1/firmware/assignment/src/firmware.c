@@ -7,7 +7,7 @@ int main(void) {
 
 	// print_str("Hello world\n");
 	// print_dec(457);
-	temp = convert(593);
+	temp = convert(87);
 	print_dec(temp);
 }
 
@@ -20,7 +20,7 @@ int divide(int dividend, int divisor) {
 
     int quotient = 0;
 	// print_str("sign check\n");
-    // int sign = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
+    int sign = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
 
     unsigned int a = (dividend < 0) ? -dividend : dividend;
     unsigned int b = (divisor < 0) ? -divisor : divisor;
