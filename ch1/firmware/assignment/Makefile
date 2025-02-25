@@ -5,7 +5,7 @@ RISCV_GNU_TOOLCHAIN_GIT_REVISION = 20f6153
 RISCV_GNU_TOOLCHAIN_INSTALL_PREFIX = /opt/riscv
 TOOLCHAIN_PREFIX = $(RISCV_GNU_TOOLCHAIN_INSTALL_PREFIX)/bin/riscv32-unknown-elf-
 
-PYTHON = python
+PYTHON = /usr/bin/python3
 CC=$(TOOLCHAIN_PREFIX)gcc
 RM = rm -rf
 MKDIR = mkdir
@@ -72,4 +72,4 @@ clean:
 	$(RM) -f simulation_output.txt
 
 report: simulation_output.txt
-	@$(PYTHON) $(TOOLS)/parse_simulation.py $<
+	@$(PTOOLS)/parse_simulation.py $
