@@ -1,0 +1,54 @@
+
+Discarded input sections
+
+ .riscv.attributes
+                0x00000000       0x1a build/firmware.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ROM              0x00000000         0x00000800         xr
+RAM              0x00000800         0x00000800         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.text           0x00000000       0x98
+                0x00000000                        . = 0x0
+ *(.init)
+ .init          0x00000000       0x98 build/firmware.o
+                0x00000000                start
+ *(.text*)
+ .text          0x00000098        0x0 build/firmware.o
+
+.data           0x00000800        0x0
+                0x00000000                        . = 0x0
+ *(.data)
+ .data          0x00000800        0x0 build/firmware.o
+
+.bss            0x00000800        0x0
+ .bss           0x00000800        0x0 build/firmware.o
+
+.rodata         0x00000800      0x400
+                0x00000400                        . = 0x400
+ *fill*         0x00000800      0x400 
+ *(.rodata)
+                0x00000c00                        . = ALIGN (0x4)
+ FILL mask 0xff
+
+/DISCARD/
+ *(.note*)
+ *(.iplt*)
+ *(.igot*)
+ *(.rel*)
+ *(.comment)
+ *(.riscv.attributes)
+LOAD build/firmware.o
+LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/libgcc.a
+START GROUP
+LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/../../../../riscv32-unknown-elf/lib/libc.a
+LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/../../../../riscv32-unknown-elf/lib/libgloss.a
+END GROUP
+LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/libgcc.a
+OUTPUT(firmware.elf elf32-littleriscv)

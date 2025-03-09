@@ -44,7 +44,13 @@ architecture Behavioural of riscv_microcontroller is
     signal dmem_di_o : STD_LOGIC_VECTOR(31 downto 0);
     signal instruction_i : STD_LOGIC_VECTOR(31 downto 0);
     signal PC_o : STD_LOGIC_VECTOR(31 downto 0);
-
+    
+    signal sysclock_i : STD_LOGIC;
+    signal sysreset_i : STD_LOGIC;
+    signal sreset_o : STD_LOGIC;
+    signal clock_o: STD_LOGIC;
+    signal heartbeat_o : STD_LOGIC;
+    
 begin
 
     -------------------------------------------------------------------------------
@@ -58,14 +64,15 @@ begin
     dmem_di <= dmem_di_o;
     instruction_i <= instruction;
     PC <= PC_o;
+    
 
 
     -------------------------------------------------------------------------------
     -- MICROPROCESSOR
     -------------------------------------------------------------------------------
     riscv_inst00: component riscv port map(
-        clock => clock_i,
-        reset => reset_i,
+        clock => clock_o,
+        reset => sreset_o,
         dmem_do => dmem_do_i,
         dmem_we => dmem_we_o,
         dmem_a => dmem_a_o,
@@ -73,5 +80,26 @@ begin
         instruction => instruction_i,
         PC => PC_o
     );
+    
+    -------------------------------------------------------------------------------
+    -- MMCM
+    -------------------------------------------------------------------------------
+    clock_and_reset_pynq_1: component clock_and_reset_pynq port map (
+        sysclock => clock_i,
+        sysreset => reset_i,
+        sreset => sreset_o,
+        clock => clock_o,
+        heartbeat => heartbeat_o
+    );
+    
+    
+    -------------------------------------------------------------------------------
+    -- MEMORY
+    -------------------------------------------------------------------------------
+     
+     
+     
+     
+     
 
 end Behavioural;
