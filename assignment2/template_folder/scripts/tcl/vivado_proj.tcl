@@ -10,8 +10,8 @@
 ################################################################################
 
 set pname "hwswcd_chapter_2"
-set path "/home/jvliegen/Documents/courses/KULeuven/sem8_HWSWCD/vivado/"
-set srcpath "/home/jvliegen/vc/github/KULeuven-Diepenbeek/course_hwswcodesign_internal/ch2"
+set path "C:/Users/bjorn/School2024-2025/HWSWcodesign/vivado"
+set srcpath "C:/Users/bjorn/School2024-2025/HWSWcodesign/github/assignment2/template_folder"
 
 set part "xc7z020clg400-1"
 set board "tul.com.tw:pynq-z2:part0:1.0"
