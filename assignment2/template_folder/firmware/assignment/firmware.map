@@ -45,10 +45,10 @@ Linker script and memory map
  *(.comment)
  *(.riscv.attributes)
 LOAD build/firmware.o
-LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/libgcc.a
+LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a
 START GROUP
-LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/../../../../riscv32-unknown-elf/lib/libc.a
-LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/../../../../riscv32-unknown-elf/lib/libgloss.a
+LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/../../../../riscv32-unknown-elf/lib/libc.a
+LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/../../../../riscv32-unknown-elf/lib/libgloss.a
 END GROUP
-LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/14.2.0/libgcc.a
+LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a
 OUTPUT(firmware.elf elf32-littleriscv)
