@@ -1,17 +1,18 @@
 #include "print.h"
+#define ADDR ((volatile unsigned int *)0x80000000)
 
-unsigned int convert(unsigned int x);
+void delay() {
+	for (volatile unsigned int i = 0; i < 125000000; i++);
+}
 
-int main(void) {
-	unsigned int counter = 0;
-	unsigned int leds = 0;
-	counter++;
-	if (counter == 125) {
-		counter = 0;
-		leds++;
-		if (leds > 8) {
-			leds = 0;
-		}
-		*((volatile unsigned int*)OUTPORT) = leds;
+int main() {
+	unsigned int value = 0x01;
+
+	while (1) {
+		*ADDR = value;
+
+		value ^= 0x01;
+		delay();
 	}
+	return 0;
 }
