@@ -37,7 +37,7 @@ Disassembly of section .text:
   74:	00000f13          	addi	t5,zero,0
   78:	00000f93          	addi	t6,zero,0
   7c:	00001137          	lui	sp,0x1
-  80:	190000ef          	jal	ra,210 <main>
+  80:	120000ef          	jal	ra,1a0 <main>
   84:	0080006f          	jal	zero,8c <end>
   88:	00100073          	ebreak
 
@@ -122,48 +122,9 @@ Disassembly of section .text:
  198:	fd9ff06f          	jal	zero,170 <print_hex+0x18>
  19c:	00008067          	jalr	zero,0(ra)
 
-000001a0 <divide>:
- 1a0:	04058a63          	beq	a1,zero,1f4 <divide+0x54>
- 1a4:	41f55713          	srai	a4,a0,0x1f
- 1a8:	00a747b3          	xor	a5,a4,a0
- 1ac:	40e787b3          	sub	a5,a5,a4
- 1b0:	41f5d713          	srai	a4,a1,0x1f
- 1b4:	00b745b3          	xor	a1,a4,a1
- 1b8:	40e585b3          	sub	a1,a1,a4
- 1bc:	00000513          	addi	a0,zero,0
- 1c0:	00b7f463          	bgeu	a5,a1,1c8 <divide+0x28>
- 1c4:	00008067          	jalr	zero,0(ra)
- 1c8:	00058713          	addi	a4,a1,0
- 1cc:	00100693          	addi	a3,zero,1
- 1d0:	0100006f          	jal	zero,1e0 <divide+0x40>
- 1d4:	00c77a63          	bgeu	a4,a2,1e8 <divide+0x48>
- 1d8:	00169693          	slli	a3,a3,0x1
- 1dc:	00060713          	addi	a4,a2,0
- 1e0:	00171613          	slli	a2,a4,0x1
- 1e4:	fec7f8e3          	bgeu	a5,a2,1d4 <divide+0x34>
- 1e8:	40e787b3          	sub	a5,a5,a4
- 1ec:	00d50533          	add	a0,a0,a3
- 1f0:	fd1ff06f          	jal	zero,1c0 <divide+0x20>
- 1f4:	fff00513          	addi	a0,zero,-1
- 1f8:	00008067          	jalr	zero,0(ra)
-
-000001fc <convert>:
- 1fc:	fe050513          	addi	a0,a0,-32
- 200:	00251793          	slli	a5,a0,0x2
- 204:	00900593          	addi	a1,zero,9
- 208:	00a78533          	add	a0,a5,a0
- 20c:	f95ff06f          	jal	zero,1a0 <divide>
-
-00000210 <main>:
- 210:	ff010113          	addi	sp,sp,-16 # ff0 <base_lut+0x7f0>
- 214:	25100513          	addi	a0,zero,593
- 218:	00112623          	sw	ra,12(sp)
- 21c:	fe1ff0ef          	jal	ra,1fc <convert>
- 220:	eb9ff0ef          	jal	ra,d8 <print_dec>
- 224:	00c12083          	lw	ra,12(sp)
- 228:	00000513          	addi	a0,zero,0
- 22c:	01010113          	addi	sp,sp,16
- 230:	00008067          	jalr	zero,0(ra)
+000001a0 <main>:
+ 1a0:	00000513          	addi	a0,zero,0
+ 1a4:	00008067          	jalr	zero,0(ra)
 
 Disassembly of section .data:
 
