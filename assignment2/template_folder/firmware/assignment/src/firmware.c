@@ -6,7 +6,7 @@ int main(void) {
 	unsigned int counter = 0;
 	unsigned int leds = 0;
 	counter++;
-	if (counter == 125000000) {
+	if (counter == 125) {
 		counter = 0;
 		leds++;
 		if (leds > 8) {
