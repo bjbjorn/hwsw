@@ -139,14 +139,20 @@ Disassembly of section .text:
 000001d0 <main>:
  1d0:	ff010113          	addi	sp,sp,-16
  1d4:	00812423          	sw	s0,8(sp)
- 1d8:	00912223          	sw	s1,4(sp)
- 1dc:	00112623          	sw	ra,12(sp)
- 1e0:	00100413          	addi	s0,zero,1
- 1e4:	800004b7          	lui	s1,0x80000
- 1e8:	0084a023          	sw	s0,0(s1) # 80000000 <base_lut+0x7ffff800>
- 1ec:	00144413          	xori	s0,s0,1
+ 1d8:	00112623          	sw	ra,12(sp)
+ 1dc:	00100793          	addi	a5,zero,1
+ 1e0:	80000437          	lui	s0,0x80000
+ 1e4:	00f42023          	sw	a5,0(s0) # 80000000 <base_lut+0x7ffff800>
+ 1e8:	fb9ff0ef          	jal	ra,1a0 <delay>
+ 1ec:	fb5ff0ef          	jal	ra,1a0 <delay>
  1f0:	fb1ff0ef          	jal	ra,1a0 <delay>
- 1f4:	ff5ff06f          	jal	zero,1e8 <main+0x18>
+ 1f4:	fadff0ef          	jal	ra,1a0 <delay>
+ 1f8:	fa9ff0ef          	jal	ra,1a0 <delay>
+ 1fc:	fa5ff0ef          	jal	ra,1a0 <delay>
+ 200:	fa1ff0ef          	jal	ra,1a0 <delay>
+ 204:	f9dff0ef          	jal	ra,1a0 <delay>
+ 208:	00800793          	addi	a5,zero,8
+ 20c:	fd9ff06f          	jal	zero,1e4 <main+0x14>
 
 Disassembly of section .data:
 
