@@ -37,7 +37,7 @@ Disassembly of section .text:
   74:	00000f13          	addi	t5,zero,0
   78:	00000f93          	addi	t6,zero,0
   7c:	00001137          	lui	sp,0x1
-  80:	120000ef          	jal	ra,1a0 <main>
+  80:	150000ef          	jal	ra,1d0 <main>
   84:	0080006f          	jal	zero,8c <end>
   88:	00100073          	ebreak
 
@@ -122,9 +122,31 @@ Disassembly of section .text:
  198:	fd9ff06f          	jal	zero,170 <print_hex+0x18>
  19c:	00008067          	jalr	zero,0(ra)
 
-000001a0 <main>:
- 1a0:	00000513          	addi	a0,zero,0
- 1a4:	00008067          	jalr	zero,0(ra)
+000001a0 <delay>:
+ 1a0:	ff010113          	addi	sp,sp,-16 # ff0 <base_lut+0x7f0>
+ 1a4:	077367b7          	lui	a5,0x7736
+ 1a8:	00012623          	sw	zero,12(sp)
+ 1ac:	93f78793          	addi	a5,a5,-1729 # 773593f <base_lut+0x773513f>
+ 1b0:	00c12703          	lw	a4,12(sp)
+ 1b4:	00e7f663          	bgeu	a5,a4,1c0 <delay+0x20>
+ 1b8:	01010113          	addi	sp,sp,16
+ 1bc:	00008067          	jalr	zero,0(ra)
+ 1c0:	00c12703          	lw	a4,12(sp)
+ 1c4:	00170713          	addi	a4,a4,1
+ 1c8:	00e12623          	sw	a4,12(sp)
+ 1cc:	fe5ff06f          	jal	zero,1b0 <delay+0x10>
+
+000001d0 <main>:
+ 1d0:	ff010113          	addi	sp,sp,-16
+ 1d4:	00812423          	sw	s0,8(sp)
+ 1d8:	00912223          	sw	s1,4(sp)
+ 1dc:	00112623          	sw	ra,12(sp)
+ 1e0:	00100413          	addi	s0,zero,1
+ 1e4:	800004b7          	lui	s1,0x80000
+ 1e8:	0084a023          	sw	s0,0(s1) # 80000000 <base_lut+0x7ffff800>
+ 1ec:	00144413          	xori	s0,s0,1
+ 1f0:	fb1ff0ef          	jal	ra,1a0 <delay>
+ 1f4:	ff5ff06f          	jal	zero,1e8 <main+0x18>
 
 Disassembly of section .data:
 
