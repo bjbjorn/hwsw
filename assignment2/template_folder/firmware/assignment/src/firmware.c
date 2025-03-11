@@ -2,7 +2,7 @@
 #define ADDR ((volatile unsigned int *)0x80000000)
 
 void delay() {
-	for (volatile unsigned int i = 0; i < 15625000; i++);
+	for (volatile unsigned int i = 0; i < 3125000; i++);
 }
 
 int main() {
