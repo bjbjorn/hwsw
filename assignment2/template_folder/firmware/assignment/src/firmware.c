@@ -12,7 +12,7 @@ int main() {
 		*ADDR = value;
 		delay();
 		value++;
-		if (value <= 0x09) {
+		if (value >= 0x09) {
 			value = 0x00;
 		}
 	}
