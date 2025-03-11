@@ -11,11 +11,11 @@ int main() {
 	while (1) {
 		*ADDR = value;
 
-		value = 0x01;
+		value = 0x03;
 		delay();
 		value = 0x02;
 		delay();
-		value = 0x03;
+		value = 0x01;
 		delay();
 		value = 0x04;
 		delay();
