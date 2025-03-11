@@ -1,9 +1,6 @@
 
 Discarded input sections
 
- .comment       0x00000000       0x1c build/print.o
- .riscv.attributes
-                0x00000000       0x1c build/print.o
  .comment       0x00000000       0x1c build/firmware.o
  .riscv.attributes
                 0x00000000       0x1c build/firmware.o
@@ -20,47 +17,34 @@ RAM              0x00000800         0x00000800         xrw
 Linker script and memory map
 
 
-.text           0x00000000      0x208
+.text           0x00000000       0xf8
                 0x00000000                        . = 0x0
  *(.init)
  .init          0x00000000       0x90 build/start.o
                 0x00000000                start
  *(.text*)
- .text          0x00000090      0x110 build/print.o
-                0x00000090                print_chr
-                0x0000009c                print_str
-                0x000000b8                getDigit
-                0x000000d8                print_dec
-                0x00000158                print_hex
- .text          0x000001a0       0x30 build/firmware.o
-                0x000001a0                delay
- .text.startup  0x000001d0       0x38 build/firmware.o
-                0x000001d0                main
- .text          0x00000208        0x0 build/start.o
+ .text          0x00000090       0x30 build/firmware.o
+                0x00000090                delay
+ .text.startup  0x000000c0       0x38 build/firmware.o
+                0x000000c0                main
+ .text          0x000000f8        0x0 build/start.o
 
-.data           0x00000800       0x2c
+.data           0x00000800        0x0
                 0x00000000                        . = 0x0
  *(.data)
- .data          0x00000800       0x2c build/print.o
-                0x00000800                base_lut
- .data          0x0000082c        0x0 build/firmware.o
- .data          0x0000082c        0x0 build/start.o
+ .data          0x00000800        0x0 build/firmware.o
+ .data          0x00000800        0x0 build/start.o
 
-.bss            0x0000082c        0x0
- .bss           0x0000082c        0x0 build/print.o
- .bss           0x0000082c        0x0 build/firmware.o
- .bss           0x0000082c        0x0 build/start.o
+.bss            0x00000800        0x0
+ .bss           0x00000800        0x0 build/firmware.o
+ .bss           0x00000800        0x0 build/start.o
 
-.rodata         0x0000082c      0x400
+.rodata         0x00000800      0x400
                 0x00000400                        . = 0x400
- *fill*         0x0000082c      0x400 
+ *fill*         0x00000800      0x400 
  *(.rodata)
-                0x00000c2c                        . = ALIGN (0x4)
+                0x00000c00                        . = ALIGN (0x4)
  FILL mask 0xff
-
-.rodata.str1.4  0x00000c2c       0x21
- .rodata.str1.4
-                0x00000c2c       0x21 build/print.o
 
 /DISCARD/
  *(.note*)
@@ -69,7 +53,6 @@ Linker script and memory map
  *(.rel*)
  *(.comment)
  *(.riscv.attributes)
-LOAD build/print.o
 LOAD build/firmware.o
 LOAD build/start.o
 LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a
