@@ -11,7 +11,7 @@
 
 set pname "hwswcd_chapter_2"
 set path "C:/Users/bjorn/School2024-2025/HWSWcodesign/vivado"
-set srcpath "C:/Users/bjorn/School2024-2025/HWSWcodesign/github/assignment2/template_folder"
+set srcpath "C:/Users/bjorn/School2024-2025/HWSWcodesign/github/assignment2/assignment2"
 
 set part "xc7z020clg400-1"
 set board "tul.com.tw:pynq-z2:part0:1.0"
