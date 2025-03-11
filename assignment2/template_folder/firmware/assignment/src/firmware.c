@@ -10,7 +10,6 @@ int main() {
 
 	while (1) {
 		*ADDR = 0x01;
-		*ADDR = 0x01;
 		*ADDR = 0x02;
 		delay();
 		*ADDR = 0x02;
