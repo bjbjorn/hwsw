@@ -9,31 +9,23 @@ int main() {
 	unsigned int value = 0x01;
 
 	while (1) {
-		*ADDR = value;
-
-		value = 0x01;
-		*ADDR = value;
+		*ADDR = 0x01;
+		*ADDR = 0x01;
+		*ADDR = 0x02;
 		delay();
-		value = 0x02;
-		*ADDR = value;
+		*ADDR = 0x02;
 		delay();
-		value = 0x03;
-		*ADDR = value;
+		*ADDR = 0x03;
 		delay();
-		value = 0x04;
-		*ADDR = value;
+		*ADDR = 0x04;
 		delay();
-		value = 0x05;
-		*ADDR = value;
+		*ADDR = 0x05;
 		delay();
-		value = 0x06;
-		*ADDR = value;
+		*ADDR = 0x06;
 		delay();
-		value = 0x07;
-		*ADDR = value;
+		*ADDR = 0x07;
 		delay();
-		value = 0x08;
-		*ADDR = value;
+		*ADDR = 0x08;
 		delay();
 	}
 	return 0;
