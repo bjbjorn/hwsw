@@ -2,18 +2,18 @@
 #define ADDR ((volatile unsigned int *)0x80000000)
 
 void delay() {
-	for (volatile unsigned int i = 0; i < 3125000; i++);
+	for (volatile unsigned int i = 0; i < 312500; i++);
 }
 
 int main() {
-	unsigned int value = 0x00;
+	unsigned int value = 0;
 
 	while (1) {
 		*ADDR = value;
 		delay();
 		value++;
-		if (value >= 0x09) {
-			value = 0x00;
+		if (value >= 16) {
+			value = 0;
 		}
 	}
 	return 0;
