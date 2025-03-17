@@ -1,6 +1,9 @@
 
 Discarded input sections
 
+ .comment       0x00000000       0x1c build/print.o
+ .riscv.attributes
+                0x00000000       0x1c build/print.o
  .comment       0x00000000       0x1c build/tcnt.o
  .riscv.attributes
                 0x00000000       0x1c build/tcnt.o
@@ -20,43 +23,56 @@ RAM              0x00000800         0x00000800         xrw
 Linker script and memory map
 
 
-.text           0x00000000      0x2b8
+.text           0x00000000      0x3c4
                 0x00000000                        . = 0x0
  *(.init)
  .init          0x00000000       0xc0 build/start.o
                 0x00000000                start
                 0x00000090                sw_mult
  *(.text*)
- .text          0x000000c0       0x78 build/tcnt.o
-                0x000000c0                TCNT_start
-                0x000000d4                TCNT_stop
-                0x000000e8                TCNT_start_div8
-                0x00000110                TCNT_start_div16
- .text          0x00000138      0x100 build/firmware.o
-                0x00000138                delay
-                0x00000168                matrix_mult
- .text.startup  0x00000238       0x80 build/firmware.o
-                0x00000238                main
- .text          0x000002b8        0x0 build/start.o
+ .text          0x000000c0      0x110 build/print.o
+                0x000000c0                print_chr
+                0x000000cc                print_str
+                0x000000e8                getDigit
+                0x00000108                print_dec
+                0x00000188                print_hex
+ .text          0x000001d0       0x78 build/tcnt.o
+                0x000001d0                TCNT_start
+                0x000001e4                TCNT_stop
+                0x000001f8                TCNT_start_div8
+                0x00000220                TCNT_start_div16
+ .text          0x00000248      0x100 build/firmware.o
+                0x00000248                delay
+                0x00000278                matrix_mult
+ .text.startup  0x00000348       0x7c build/firmware.o
+                0x00000348                main
+ .text          0x000003c4        0x0 build/start.o
 
-.data           0x00000800        0x0
+.data           0x00000800       0x2c
                 0x00000000                        . = 0x0
  *(.data)
- .data          0x00000800        0x0 build/tcnt.o
- .data          0x00000800        0x0 build/firmware.o
- .data          0x00000800        0x0 build/start.o
+ .data          0x00000800       0x2c build/print.o
+                0x00000800                base_lut
+ .data          0x0000082c        0x0 build/tcnt.o
+ .data          0x0000082c        0x0 build/firmware.o
+ .data          0x0000082c        0x0 build/start.o
 
-.bss            0x00000800        0x0
- .bss           0x00000800        0x0 build/tcnt.o
- .bss           0x00000800        0x0 build/firmware.o
- .bss           0x00000800        0x0 build/start.o
+.bss            0x0000082c        0x0
+ .bss           0x0000082c        0x0 build/print.o
+ .bss           0x0000082c        0x0 build/tcnt.o
+ .bss           0x0000082c        0x0 build/firmware.o
+ .bss           0x0000082c        0x0 build/start.o
 
-.rodata         0x00000800      0x400
+.rodata         0x0000082c      0x400
                 0x00000400                        . = 0x400
- *fill*         0x00000800      0x400 
+ *fill*         0x0000082c      0x400 
  *(.rodata)
-                0x00000c00                        . = ALIGN (0x4)
+                0x00000c2c                        . = ALIGN (0x4)
  FILL mask 0xff
+
+.rodata.str1.4  0x00000c2c       0x21
+ .rodata.str1.4
+                0x00000c2c       0x21 build/print.o
 
 /DISCARD/
  *(.note*)
@@ -65,6 +81,7 @@ Linker script and memory map
  *(.rel*)
  *(.comment)
  *(.riscv.attributes)
+LOAD build/print.o
 LOAD build/tcnt.o
 LOAD build/firmware.o
 LOAD build/start.o
