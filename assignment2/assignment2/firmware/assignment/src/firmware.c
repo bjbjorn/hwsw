@@ -1,6 +1,8 @@
 #include "print.h"
 #include "tcnt.h"
-#define ADDR ((volatile unsigned int *)0x80000000)
+//#define ADDR ((volatile unsigned int *)0x80000000)
+
+extern unsigned int sw_mult(unsigned int x, unsigned int y);
 
 struct matrix_t{
 	unsigned int a00;
@@ -9,11 +11,6 @@ struct matrix_t{
 	unsigned int a11;
 };
 
-extern unsigned int sw_mult(unsigned int x, unsigned int y);
-
-void delay() {
-	for (volatile unsigned int i = 0; i < 3125000; i++);
-}
 
 void matrix_mult(struct matrix_t * z, struct matrix_t * x, struct matrix_t * y) {
 	z->a00 = sw_mult(x->a00, y->a00) + sw_mult(x->a10, y->a01);

@@ -197,12 +197,10 @@ begin
     
     PREG_TIMER: process(riscv_d_in, iface_do, dmem_do)
     begin
-        if dmem_a > x"81000000" then 
-            riscv_d_in <= iface_do(31 downto 0);
-            --iface_do <= dmem_do(31 downto 0);
+        if dmem_a = C_TIMER_BASE_ADDRESS_MASK then 
+            riscv_d_in <= iface_do;
         else
             riscv_d_in <= dmem_do;
-            --dmem <= dmem_do(31 downto 0);
         end if;
     end process;
     
