@@ -1,6 +1,9 @@
 
 Discarded input sections
 
+ .comment       0x00000000       0x1c build/tcnt.o
+ .riscv.attributes
+                0x00000000       0x1c build/tcnt.o
  .comment       0x00000000       0x1c build/firmware.o
  .riscv.attributes
                 0x00000000       0x1c build/firmware.o
@@ -17,25 +20,34 @@ RAM              0x00000800         0x00000800         xrw
 Linker script and memory map
 
 
-.text           0x00000000       0xf8
+.text           0x00000000      0x2b8
                 0x00000000                        . = 0x0
  *(.init)
- .init          0x00000000       0x90 build/start.o
+ .init          0x00000000       0xc0 build/start.o
                 0x00000000                start
+                0x00000090                sw_mult
  *(.text*)
- .text          0x00000090       0x30 build/firmware.o
-                0x00000090                delay
- .text.startup  0x000000c0       0x38 build/firmware.o
-                0x000000c0                main
- .text          0x000000f8        0x0 build/start.o
+ .text          0x000000c0       0x78 build/tcnt.o
+                0x000000c0                TCNT_start
+                0x000000d4                TCNT_stop
+                0x000000e8                TCNT_start_div8
+                0x00000110                TCNT_start_div16
+ .text          0x00000138      0x100 build/firmware.o
+                0x00000138                delay
+                0x00000168                matrix_mult
+ .text.startup  0x00000238       0x80 build/firmware.o
+                0x00000238                main
+ .text          0x000002b8        0x0 build/start.o
 
 .data           0x00000800        0x0
                 0x00000000                        . = 0x0
  *(.data)
+ .data          0x00000800        0x0 build/tcnt.o
  .data          0x00000800        0x0 build/firmware.o
  .data          0x00000800        0x0 build/start.o
 
 .bss            0x00000800        0x0
+ .bss           0x00000800        0x0 build/tcnt.o
  .bss           0x00000800        0x0 build/firmware.o
  .bss           0x00000800        0x0 build/start.o
 
@@ -53,6 +65,7 @@ Linker script and memory map
  *(.rel*)
  *(.comment)
  *(.riscv.attributes)
+LOAD build/tcnt.o
 LOAD build/firmware.o
 LOAD build/start.o
 LOAD /opt/riscv/lib/gcc/riscv32-unknown-elf/13.2.0/libgcc.a
