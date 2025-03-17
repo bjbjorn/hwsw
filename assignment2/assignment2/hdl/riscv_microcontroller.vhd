@@ -62,6 +62,19 @@ architecture Behavioural of riscv_microcontroller is
         );
     end component clock_and_reset_pynq;
 
+    component wrapped_timer is
+        generic(
+            G_WIDTH : natural := 8
+        );
+        port(
+            clock : in STD_LOGIC;
+            reset : in STD_LOGIC;
+            iface_di : in STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
+            iface_a : in STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
+            iface_we : in STD_LOGIC;
+            iface_do : out STD_LOGIC_VECTOR(C_WIDTH-1 downto 0)
+        );
+    end component wrapped_timer;
 
     -- (DE-)LOCALISING IN/OUTPUTS
     signal sys_clock_i : STD_LOGIC;
@@ -88,7 +101,13 @@ architecture Behavioural of riscv_microcontroller is
     signal leds : STD_LOGIC_VECTOR(6 downto 0);
     
     signal cycle_count : integer range 0 to 2 := 0;
-
+    
+    signal iface_di : STD_LOGIC_VECTOR(63 downto 0);
+    signal iface_a : STD_LOGIC_VECTOR(31 downto 0);
+    signal iface_we : STD_LOGIC;
+    signal iface_do : STD_LOGIC_VECTOR(63 downto 0);
+    
+    signal riscv_d_in : STD_LOGIC_VECTOR(31 downto 0);
 begin
 
     -------------------------------------------------------------------------------
@@ -107,7 +126,7 @@ begin
         clock => clock,
         reset => reset,
         ce => ce,
-        dmem_do => dmem_do,
+        dmem_do => riscv_d_in,
         dmem_we => dmem_we,
         dmem_a => dmem_a,
         dmem_di => dmem_di,
@@ -171,10 +190,31 @@ begin
             else
                 if dmem_we = '1' and dmem_a = x"80000000" then 
                     leds <= dmem_di(6 downto 0);
+                elsif dmem_we = '1' and dmem_a = x"81000000" then 
+                    iface_di <= dmem_di(31 downto 0);
                 end if;
             end if;
         end if;
     end process;
+    
+    PREG_TIMER: process(clock)
+    begin
+        if rising_edge(clock) then 
+            if reset = '1' then 
+            
+            else
+                if dmem_we = '1' and dmem_a = x"81000000" then 
+                    riscv_d_in <= iface_do(31 downto 0);
+                    --iface_do <= dmem_do(31 downto 0);
+                elsif dmem_we = '1' and dmem_a = x"80000000" then
+                    riscv_d_in <= dmem_do;
+                    --dmem <= dmem_do(31 downto 0);
+                end if;
+            end if;
+        end if;
+    end process;
+    
+    
 
 
     -------------------------------------------------------------------------------
