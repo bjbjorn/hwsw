@@ -95,8 +95,7 @@ architecture Behavioural of riscv_microcontroller is
     signal clock : STD_LOGIC;
     signal reset : STD_LOGIC;
 
-    signal ce : STD_LOGIC_VECTOR(2 downto 0);
-    signal ce_d : STD_LOGIC;
+    signal ce, ce_d : STD_LOGIC;
     signal toid, toid_d : STD_LOGIC;
 
     signal leds : STD_LOGIC_VECTOR(6 downto 0);
@@ -126,7 +125,7 @@ begin
     riscv_inst00: component riscv port map(
         clock => clock,
         reset => reset,
-        ce => ce(2),
+        ce => ce,
         dmem_do => riscv_d_in,
         dmem_we => dmem_we,
         dmem_a => dmem_a,
@@ -134,13 +133,21 @@ begin
         instruction => instruction,
         PC => PC
     );
-PREG_CPU_CTRL: process(clock)
+
+    PREG_CPU_CTRL: process(clock)
     begin
         if rising_edge(clock) then
             if reset = '1' then 
-                ce <= "001";
+                ce <= '0';
+                cycle_count <= 0;
             else
-                ce <= ce(1 downto 0) & ce(2);
+                if cycle_count = 2 then
+                    ce <= '1';
+                    cycle_count <= 0;
+                else
+                    ce <= '0';
+                    cycle_count <= cycle_count + 1;
+                end if;
             end if;
         end if;
     end process;
