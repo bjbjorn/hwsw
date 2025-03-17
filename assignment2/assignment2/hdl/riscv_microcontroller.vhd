@@ -102,10 +102,10 @@ architecture Behavioural of riscv_microcontroller is
     
     signal cycle_count : integer range 0 to 2 := 0;
     
-    signal iface_di : STD_LOGIC_VECTOR(63 downto 0);
+    signal iface_di : STD_LOGIC_VECTOR(31 downto 0);
     signal iface_a : STD_LOGIC_VECTOR(31 downto 0);
     signal iface_we : STD_LOGIC;
-    signal iface_do : STD_LOGIC_VECTOR(63 downto 0);
+    signal iface_do : STD_LOGIC_VECTOR(31 downto 0);
     
     signal riscv_d_in : STD_LOGIC_VECTOR(31 downto 0);
 begin
@@ -190,27 +190,19 @@ begin
             else
                 if dmem_we = '1' and dmem_a = x"80000000" then 
                     leds <= dmem_di(6 downto 0);
-                elsif dmem_we = '1' and dmem_a = x"81000000" then 
-                    iface_di <= dmem_di(31 downto 0);
                 end if;
             end if;
         end if;
     end process;
     
-    PREG_TIMER: process(clock)
+    PREG_TIMER: process(riscv_d_in, iface_do, dmem_do)
     begin
-        if rising_edge(clock) then 
-            if reset = '1' then 
-            
-            else
-                if dmem_we = '1' and dmem_a = x"81000000" then 
-                    riscv_d_in <= iface_do(31 downto 0);
-                    --iface_do <= dmem_do(31 downto 0);
-                elsif dmem_we = '1' and dmem_a = x"80000000" then
-                    riscv_d_in <= dmem_do;
-                    --dmem <= dmem_do(31 downto 0);
-                end if;
-            end if;
+        if dmem_a > x"81000000" then 
+            riscv_d_in <= iface_do(31 downto 0);
+            --iface_do <= dmem_do(31 downto 0);
+        else
+            riscv_d_in <= dmem_do;
+            --dmem <= dmem_do(31 downto 0);
         end if;
     end process;
     
@@ -227,5 +219,19 @@ begin
         clock => clock,
         heartbeat => open
     );
+    
+    
+    -------------------------------------------------------------------------------
+    -- TIMER WRAPPER
+    -------------------------------------------------------------------------------
+    wrapped_timer00: component wrapped_timer port map(
+        clock => clock,
+        reset => reset,
+        iface_di => iface_di,
+        iface_a => iface_a,
+        iface_we => iface_we,
+        iface_do => iface_do
+    );
+    
 
 end Behavioural;
