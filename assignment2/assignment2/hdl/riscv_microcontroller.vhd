@@ -95,7 +95,8 @@ architecture Behavioural of riscv_microcontroller is
     signal clock : STD_LOGIC;
     signal reset : STD_LOGIC;
 
-    signal ce, ce_d : STD_LOGIC;
+    signal ce : STD_LOGIC_VECTOR(2 downto 0);
+    signal ce_d : STD_LOGIC;
     signal toid, toid_d : STD_LOGIC;
 
     signal leds : STD_LOGIC_VECTOR(6 downto 0);
@@ -125,7 +126,7 @@ begin
     riscv_inst00: component riscv port map(
         clock => clock,
         reset => reset,
-        ce => ce,
+        ce => ce(2),
         dmem_do => riscv_d_in,
         dmem_we => dmem_we,
         dmem_a => dmem_a,
@@ -133,21 +134,13 @@ begin
         instruction => instruction,
         PC => PC
     );
-
-    PREG_CPU_CTRL: process(clock)
+PREG_CPU_CTRL: process(clock)
     begin
         if rising_edge(clock) then
             if reset = '1' then 
-                ce <= '0';
-                cycle_count <= 0;
+                ce <= "001";
             else
-                if cycle_count = 2 then
-                    ce <= '1';
-                    cycle_count <= 0;
-                else
-                    ce <= '0';
-                    cycle_count <= cycle_count + 1;
-                end if;
+                ce <= ce(1 downto 0) & ce(2);
             end if;
         end if;
     end process;
@@ -197,7 +190,7 @@ begin
     
     PREG_TIMER: process(riscv_d_in, iface_do, dmem_do)
     begin
-        if dmem_a = C_TIMER_BASE_ADDRESS_MASK then 
+        if dmem_a(C_WIDTH-1 downto 12) = C_TIMER_BASE_ADDRESS_MASK then 
             riscv_d_in <= iface_do;
         else
             riscv_d_in <= dmem_do;
@@ -225,9 +218,9 @@ begin
     wrapped_timer00: component wrapped_timer port map(
         clock => clock,
         reset => reset,
-        iface_di => iface_di,
-        iface_a => iface_a,
-        iface_we => iface_we,
+        iface_di => dmem_di,
+        iface_a => dmem_a,
+        iface_we => dmem_we,
         iface_do => iface_do
     );
     
