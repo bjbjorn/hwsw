@@ -1,3 +1,4 @@
+#include "tcnt.h"
 #define LED_BASEAxDDRESS 0x80000000
 
 #define LED_REG0_ADDRESS (LED_BASEAxDDRESS + 0*4)
@@ -20,10 +21,11 @@ void main(void) {
     
     unsigned int i=1, j;
 
-
-    while(1) {
+    TCNT_start();
+    for(j=0;j<10;j++) {
         for(i=0;i<8;i++) {
             LED = i;
         }
     }
+    TCNT_stop();
 }
