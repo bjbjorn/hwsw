@@ -1,6 +1,20 @@
 #include "tcnt.h"
 //#define ADDR ((volatile unsigned int *)0x80000000)
 
+#define LED_BASEAxDDRESS 0x80000000
+#define LED_REG0_ADDRESS (LED_BASEAxDDRESS + 0*4)
+#define LED              (*(volatile unsigned int *) LED_REG0_ADDRESS)
+
+
+void irq_handler(unsigned int cause) {
+
+    if (cause & 4) {
+        LED = 0xFFFFFFFF;
+    }
+
+}
+
+
 extern unsigned int sw_mult(unsigned int x, unsigned int y);
 
 struct matrix_t{
