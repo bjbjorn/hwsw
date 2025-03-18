@@ -22,8 +22,13 @@ void irq_handler(unsigned int cause) {
 void main(void) {
     
     unsigned int i=1, j;
-    WGM = 4;
     TCNT_start();
+    for(j=0;j<10;j++) {
+        for(i=0;i<8;i++) {
+            LED = i;
+        }
+    }
+    WGM = 4;
     for(j=0;j<10;j++) {
         for(i=0;i<8;i++) {
             LED = i;
