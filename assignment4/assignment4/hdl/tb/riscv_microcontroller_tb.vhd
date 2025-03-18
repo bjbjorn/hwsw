@@ -37,15 +37,15 @@ architecture Behavioural of riscv_microcontroller_tb is
 
 begin
 
-    PSTIM: process
-    begin
-        irq <= (others => '0');
-        wait for 10 us;
-        irq <= (2 => '1', others => '0');
-        wait for 1 us;
-        irq <= (others => '0');
-        wait;
-    end process PSTIM;
+--    PSTIM: process
+--    begin
+--        irq <= (others => '0');
+--        wait for 10 us;
+--        irq <= (2 => '1', others => '0');
+--        wait for 1 us;
+--        irq <= (others => '0');
+--        wait;
+--    end process PSTIM;
 
     -------------------------------------------------------------------------------
     -- DUT
