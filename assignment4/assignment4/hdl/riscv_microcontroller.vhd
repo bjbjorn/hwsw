@@ -20,69 +20,23 @@ entity riscv_microcontroller is
     port(
         sys_clock : in STD_LOGIC;
         sys_reset : in STD_LOGIC;
+        irq : in STD_LOGIC_VECTOR(31 downto 0);
         gpio_leds : out STD_LOGIC_VECTOR(3 downto 0)
     );
 end entity riscv_microcontroller;
 
 architecture Behavioural of riscv_microcontroller is
 
-    component two_k_bram_dmem is
-        port(
-            clock : in STD_LOGIC;
-            init_data_in : in STD_LOGIC_VECTOR(31 downto 0);
-            init_write_enable : in STD_LOGIC;
-            init_address : in STD_LOGIC_VECTOR(10 downto 0);
-            data_in : in STD_LOGIC_VECTOR(31 downto 0);
-            write_enable : in STD_LOGIC;
-            address : in STD_LOGIC_VECTOR(10 downto 0);
-            data_out : out STD_LOGIC_VECTOR(31 downto 0)
-        );
-    end component two_k_bram_dmem;
-
-    component two_k_bram_imem is
-        port(
-            clock : in STD_LOGIC;
-            init_data_in : in STD_LOGIC_VECTOR(31 downto 0);
-            init_write_enable : in STD_LOGIC;
-            init_address : in STD_LOGIC_VECTOR(10 downto 0);
-            data_in : in STD_LOGIC_VECTOR(31 downto 0);
-            write_enable : in STD_LOGIC;
-            address : in STD_LOGIC_VECTOR(10 downto 0);
-            data_out : out STD_LOGIC_VECTOR(31 downto 0)
-        );
-    end component two_k_bram_imem;
-   
-    component clock_and_reset_pynq is
-        port(
-            sysclock : IN STD_LOGIC;
-            sysreset : IN STD_LOGIC;
-            sreset : out STD_LOGIC;
-            clock : out STD_LOGIC;
-            heartbeat : out STD_LOGIC
-        );
-    end component clock_and_reset_pynq;
-
-    component wrapped_timer is
-        generic(
-            G_WIDTH : natural := 32
-        );
-        port(
-            clock : in STD_LOGIC;
-            reset : in STD_LOGIC;
-            iface_di : in STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
-            iface_a : in STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
-            iface_we : in STD_LOGIC;
-            iface_do : out STD_LOGIC_VECTOR(C_WIDTH-1 downto 0)
-        );
-    end component wrapped_timer;
 
     -- (DE-)LOCALISING IN/OUTPUTS
     signal sys_clock_i : STD_LOGIC;
     signal sys_reset_i : STD_LOGIC;
+    signal irq_i : STD_LOGIC_VECTOR(31 downto 0);
     signal gpio_leds_o : STD_LOGIC_VECTOR(3 downto 0);
 
     -- dmem
     signal dmem_do : STD_LOGIC_VECTOR(31 downto 0);
+    signal dmem_do_dmem : STD_LOGIC_VECTOR(31 downto 0);
     signal dmem_we : STD_LOGIC;
     signal dmem_a : STD_LOGIC_VECTOR(31 downto 0);
     signal dmem_di : STD_LOGIC_VECTOR(31 downto 0);
@@ -90,24 +44,16 @@ architecture Behavioural of riscv_microcontroller is
     --imem
     signal instruction : STD_LOGIC_VECTOR(31 downto 0);
     signal PC : STD_LOGIC_VECTOR(31 downto 0);
-
+    
     -- CLOCK AND RESET
     signal clock : STD_LOGIC;
     signal reset : STD_LOGIC;
+    
+    signal ce : STD_LOGIC_VECTOR(2 downto 0);
+    
+    signal dmem_do_tcnt : STD_LOGIC_VECTOR(31 downto 0);
+    signal leds : STD_LOGIC_VECTOR(31 downto 0);
 
-    signal ce, ce_d : STD_LOGIC;
-    signal toid, toid_d : STD_LOGIC;
-
-    signal leds : STD_LOGIC_VECTOR(6 downto 0);
-    
-    signal cycle_count : integer range 0 to 2 := 0;
-    
-    signal iface_di : STD_LOGIC_VECTOR(31 downto 0);
-    signal iface_a : STD_LOGIC_VECTOR(31 downto 0);
-    signal iface_we : STD_LOGIC;
-    signal iface_do : STD_LOGIC_VECTOR(31 downto 0);
-    
-    signal riscv_d_in : STD_LOGIC_VECTOR(31 downto 0);
 begin
 
     -------------------------------------------------------------------------------
@@ -115,7 +61,10 @@ begin
     -------------------------------------------------------------------------------
     sys_clock_i <= sys_clock;
     sys_reset_i <= sys_reset;
+    irq_i <= irq;
     gpio_leds <= gpio_leds_o;
+
+
 
     gpio_leds_o <= leds(3 downto 0);
 
@@ -125,8 +74,9 @@ begin
     riscv_inst00: component riscv port map(
         clock => clock,
         reset => reset,
-        ce => ce,
-        dmem_do => riscv_d_in,
+        ce => ce(0),
+        irq => irq_i,
+        dmem_do => dmem_do,
         dmem_we => dmem_we,
         dmem_a => dmem_a,
         dmem_di => dmem_di,
@@ -138,20 +88,24 @@ begin
     begin
         if rising_edge(clock) then
             if reset = '1' then 
-                ce <= '0';
-                cycle_count <= 0;
+                ce <= (0 => '1', others => '0');
             else
-                if cycle_count = 2 then
-                    ce <= '1';
-                    cycle_count <= 0;
-                else
-                    ce <= '0';
-                    cycle_count <= cycle_count + 1;
-                end if;
+                ce <= ce(0) & ce(ce'high downto 1);
             end if;
         end if;
     end process;
 
+
+    -------------------------------------------------------------------------------
+    -- MUXING
+    -------------------------------------------------------------------------------
+    PMUX_bus: process(dmem_a, dmem_do_tcnt, dmem_do_dmem)
+    begin
+        case dmem_a(dmem_a'high downto 12) is
+            when C_TIMER_BASE_ADDRESS_MASK => dmem_do <= dmem_do_tcnt;
+            when others => dmem_do <= dmem_do_dmem;
+        end case;
+    end process;
 
     -------------------------------------------------------------------------------
     -- MEMORIES
@@ -164,7 +118,7 @@ begin
         data_in => dmem_di,
         write_enable => dmem_we,
         address => dmem_a(10 downto 0),
-        data_out  => dmem_do
+        data_out  => dmem_do_dmem
     );
 
 
@@ -186,25 +140,23 @@ begin
     begin
         if rising_edge(clock) then 
             if reset = '1' then 
-                leds <= "0000000";
+                leds <= C_GND;
             else
                 if dmem_we = '1' and dmem_a = x"80000000" then 
-                    leds <= dmem_di(6 downto 0);
+                    leds <= dmem_di;
                 end if;
             end if;
         end if;
     end process;
-    
-    PREG_TIMER: process(riscv_d_in, iface_do, dmem_do)
-    begin
-        if dmem_a(C_WIDTH-1 downto 12) = C_TIMER_BASE_ADDRESS_MASK then 
-            riscv_d_in <= iface_do;
-        else
-            riscv_d_in <= dmem_do;
-        end if;
-    end process;
-    
-    
+
+    wrapped_timer_inst00: component wrapped_timer generic map(G_WIDTH => C_WIDTH) port map (
+        clock => clock,
+        reset => reset,
+        iface_di => dmem_di,
+        iface_a => dmem_a,
+        iface_we => dmem_we,
+        iface_do => dmem_do_tcnt
+    );
 
 
     -------------------------------------------------------------------------------
@@ -217,19 +169,5 @@ begin
         clock => clock,
         heartbeat => open
     );
-    
-    
-    -------------------------------------------------------------------------------
-    -- TIMER WRAPPER
-    -------------------------------------------------------------------------------
-    wrapped_timer00: component wrapped_timer port map(
-        clock => clock,
-        reset => reset,
-        iface_di => dmem_di,
-        iface_a => dmem_a,
-        iface_we => dmem_we,
-        iface_do => iface_do
-    );
-    
 
 end Behavioural;
