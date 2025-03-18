@@ -1,12 +1,8 @@
-#include "tcnt.h"
-
+//#include "tcnt.h"
 
 #define LED_BASEAxDDRESS 0x80000000
 #define LED_REG0_ADDRESS (LED_BASEAxDDRESS + 0*4)
 #define LED              (*(volatile unsigned int *) LED_REG0_ADDRESS)
-
-
-
 
 void irq_handler(unsigned int cause) {
 
@@ -20,12 +16,12 @@ void irq_handler(unsigned int cause) {
 void main(void) {
     
     unsigned int i=1, j;
-    TCNR_start();
+    //TCNR_start();
 
     for(j=0;j<10;j++) {
         for(i=0;i<8;i++) {
             LED = i;
         }
     }
-    TCNT_stop();
+    //TCNT_stop();
 }
