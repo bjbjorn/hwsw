@@ -10,7 +10,7 @@
 ################################################################################
 
 set pname "hwswcd_chapter_4"
-set path "C:/Users/bjorn/School2024-2025/HWSWcodesign/vivado/"
+set path "C:/Users/bjorn/School2024-2025/HWSWcodesign/vivado"
 set srcpath "C:/Users/bjorn/School2024-2025/HWSWcodesign/github/assignment4/assignment4"
 
 set part "xc7z020clg400-1"
