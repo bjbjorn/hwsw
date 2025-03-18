@@ -43,7 +43,7 @@ Disassembly of section .text:
   84:	07e12823          	sw	t5,112(sp)
   88:	07f12a23          	sw	t6,116(sp)
   8c:	34203573          	csrrc	a0,mcause,zero
-  90:	1a0000ef          	jal	ra,230 <irq_handler>
+  90:	1a0000ef          	jal ra,230 <irq_handler>
   94:	00012083          	lw	ra,0(sp)
   98:	00412183          	lw	gp,4(sp)
   9c:	00812203          	lw	tp,8(sp)
