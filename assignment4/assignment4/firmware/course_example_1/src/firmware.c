@@ -11,9 +11,10 @@
 
 void irq_handler(unsigned int cause) {
 
-    if (cause & 4) {
+/*     if (cause & 4) {
         LED = 0xFFFFFFFF;
-    }
+    } */
+    LED = 0xFFFFFFFF;
     TCNT_CR = 0x17;
     TCNT_CR = 0x7;
 
