@@ -23,18 +23,19 @@ void irq_handler(unsigned int cause) {
 
 
 void main(void) {
-    
-    unsigned int i=1, j;
+    unsigned int i = 1;
+//    unsigned int i=1, j;
 //  TCNT_CMP = 0xd6540;
     TCNT_CMP = 0x100;
     TCNT_start();
     while(1) {
         if (leds_incr) {
-            LED++;
+            i++;
             leds_incr = 0;
-            if (LED == 0xf) {
-                LED = 0;
+            if (i == 0xf) {
+                i = 0;
             }
         }
+        LED = i;
     }
 }
