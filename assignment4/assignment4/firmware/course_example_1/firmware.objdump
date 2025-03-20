@@ -213,9 +213,9 @@ Disassembly of section .text:
 
 000002cc <main>:
  2cc:	ff010113          	addi	sp,sp,-16
- 2d0:	000d6737          	lui	a4,0xd6
+ 2d0:	00c66737          	lui	a4,0xc66
  2d4:	810007b7          	lui	a5,0x81000
- 2d8:	54070713          	addi	a4,a4,1344 # d6540 <leds_incr+0xd4540>
+ 2d8:	d4070713          	addi	a4,a4,-704 # c65d40 <leds_incr+0xc63d40>
  2dc:	00112623          	sw	ra,12(sp)
  2e0:	00e7a223          	sw	a4,4(a5) # 81000004 <leds_incr+0x80ffe004>
  2e4:	f4dff0ef          	jal	ra,230 <TCNT_start>
