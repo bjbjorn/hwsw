@@ -7,6 +7,7 @@
 #define LED              (*(volatile unsigned int *) LED_REG0_ADDRESS)
 
 
+unsigned int leds_incr = 0;
 
 
 void irq_handler(unsigned int cause) {
@@ -14,7 +15,7 @@ void irq_handler(unsigned int cause) {
 /*     if (cause & 4) {
         LED = 0xFFFFFFFF;
     } */
-    LED = 0xFFFFFFFF;
+    leds_incr = 0x1;
     TCNT_CR = 0x17;
     TCNT_CR = 0x7;
 
@@ -24,12 +25,16 @@ void irq_handler(unsigned int cause) {
 void main(void) {
     
     unsigned int i=1, j;
-
+//  TCNT_CMP = 0xd6540;
     TCNT_CMP = 0x100;
     TCNT_start();
     while(1) {
-        for(i=0;i<8;i++) {
-            LED = i;
+        if (leds_incr) {
+            LED++;
+            leds_incr = 0;
+            if (LED == 0xf) {
+                LED = 0;
+            }
         }
     }
 }
