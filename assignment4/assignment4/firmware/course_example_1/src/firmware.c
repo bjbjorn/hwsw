@@ -24,13 +24,7 @@ void main(void) {
 
     TCNT_CMP = 0xff;
     TCNT_start();
-    for(j=0;j<10;j++) {
-        for(i=0;i<8;i++) {
-            LED = i;
-        }
-    }
-    TCNT_stop();
-    for(j=0;j<10;j++) {
+    while(1) {
         for(i=0;i<8;i++) {
             LED = i;
         }
