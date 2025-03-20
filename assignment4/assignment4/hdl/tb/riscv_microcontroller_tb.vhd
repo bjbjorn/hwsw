@@ -28,7 +28,7 @@ architecture Behavioural of riscv_microcontroller_tb is
     -- clock and reset
     signal sys_clock : STD_LOGIC;
     signal sys_reset : STD_LOGIC;
-    signal irq : STD_LOGIC_VECTOR(31 downto 0);
+    signal external_irq : STD_LOGIC;
     signal gpio_leds : STD_LOGIC_VECTOR(3 downto 0);
 
     -- constants
@@ -37,15 +37,15 @@ architecture Behavioural of riscv_microcontroller_tb is
 
 begin
 
---    PSTIM: process
---    begin
---        irq <= (others => '0');
+    PSTIM: process
+    begin
+        external_irq <= '0';
 --        wait for 10 us;
 --        irq <= (2 => '1', others => '0');
 --        wait for 1 us;
 --        irq <= (others => '0');
---        wait;
---    end process PSTIM;
+        wait;
+    end process PSTIM;
 
     -------------------------------------------------------------------------------
     -- DUT
@@ -53,7 +53,7 @@ begin
     DUT: component riscv_microcontroller port map(
         sys_clock => sys_clock,
         sys_reset => sys_reset,
-        irq => irq,
+        external_irq => external_irq,
         gpio_leds => gpio_leds
     );
 
