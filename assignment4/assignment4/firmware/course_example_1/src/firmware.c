@@ -32,7 +32,7 @@ void main(void) {
         if (leds_incr) {
             i++;
             leds_incr = 0;
-            if (i == 0xf) {
+            if (i == 0x10) {
                 i = 0;
             }
         }
