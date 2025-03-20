@@ -1,7 +1,7 @@
 #ifndef TCNT_H
 #define TCNT_H
 
-#define TCNT_BASEADDRESS        0x81000000
+#define TCNT_BASEADDRESS        0x810000000
 
 #define TCNT_REG0_ADDRESS       (TCNT_BASEADDRESS + 0*4)
 #define TCNT_REG1_ADDRESS       (TCNT_BASEADDRESS + 1*4)
