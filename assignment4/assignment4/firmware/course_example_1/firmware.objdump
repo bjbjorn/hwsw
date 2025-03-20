@@ -163,16 +163,16 @@ Disassembly of section .text:
  22c:	0000006f          	jal	zero,22c <error>
 
 00000230 <TCNT_start>:
- 230:	10000737          	lui	a4,0x10000
- 234:	00072783          	lw	a5,0(a4) # 10000000 <main+0xffffd40>
- 238:	0037e793          	ori	a5,a5,3
+ 230:	81000737          	lui	a4,0x81000
+ 234:	00072783          	lw	a5,0(a4) # 81000000 <main+0x80fffd40>
+ 238:	0077e793          	ori	a5,a5,7
  23c:	00f72023          	sw	a5,0(a4)
  240:	00008067          	jalr	zero,0(ra)
 
 00000244 <TCNT_stop>:
- 244:	10000737          	lui	a4,0x10000
- 248:	00072783          	lw	a5,0(a4) # 10000000 <main+0xffffd40>
- 24c:	ffc7f793          	andi	a5,a5,-4
+ 244:	81000737          	lui	a4,0x81000
+ 248:	00072783          	lw	a5,0(a4) # 81000000 <main+0x80fffd40>
+ 24c:	ff87f793          	andi	a5,a5,-8
  250:	00f72023          	sw	a5,0(a4)
  254:	00008067          	jalr	zero,0(ra)
 
@@ -180,8 +180,8 @@ Disassembly of section .text:
  258:	ff010113          	addi	sp,sp,-16
  25c:	00112623          	sw	ra,12(sp)
  260:	fe5ff0ef          	jal	ra,244 <TCNT_stop>
- 264:	10000737          	lui	a4,0x10000
- 268:	00072783          	lw	a5,0(a4) # 10000000 <main+0xffffd40>
+ 264:	81000737          	lui	a4,0x81000
+ 268:	00072783          	lw	a5,0(a4) # 81000000 <main+0x80fffd40>
  26c:	00c12083          	lw	ra,12(sp)
  270:	0017e793          	ori	a5,a5,1
  274:	00f72023          	sw	a5,0(a4)
@@ -192,8 +192,8 @@ Disassembly of section .text:
  280:	ff010113          	addi	sp,sp,-16
  284:	00112623          	sw	ra,12(sp)
  288:	fbdff0ef          	jal	ra,244 <TCNT_stop>
- 28c:	10000737          	lui	a4,0x10000
- 290:	00072783          	lw	a5,0(a4) # 10000000 <main+0xffffd40>
+ 28c:	81000737          	lui	a4,0x81000
+ 290:	00072783          	lw	a5,0(a4) # 81000000 <main+0x80fffd40>
  294:	00c12083          	lw	ra,12(sp)
  298:	0027e793          	ori	a5,a5,2
  29c:	00f72023          	sw	a5,0(a4)
@@ -210,10 +210,10 @@ Disassembly of section .text:
 
 000002c0 <main>:
  2c0:	ff010113          	addi	sp,sp,-16
- 2c4:	100007b7          	lui	a5,0x10000
+ 2c4:	810007b7          	lui	a5,0x81000
  2c8:	00001737          	lui	a4,0x1
  2cc:	00112623          	sw	ra,12(sp)
- 2d0:	00e7a223          	sw	a4,4(a5) # 10000004 <main+0xffffd44>
+ 2d0:	00e7a223          	sw	a4,4(a5) # 81000004 <main+0x80fffd44>
  2d4:	f5dff0ef          	jal	ra,230 <TCNT_start>
  2d8:	800007b7          	lui	a5,0x80000
  2dc:	00100893          	addi	a7,zero,1
