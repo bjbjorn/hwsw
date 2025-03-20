@@ -22,6 +22,7 @@ void main(void) {
     
     unsigned int i=1, j;
 
+    TCNT_CMP = 0xff;
     TCNT_start();
     for(j=0;j<10;j++) {
         for(i=0;i<8;i++) {
