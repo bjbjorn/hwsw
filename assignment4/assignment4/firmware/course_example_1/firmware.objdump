@@ -211,7 +211,7 @@ Disassembly of section .text:
 000002c0 <main>:
  2c0:	ff010113          	addi	sp,sp,-16
  2c4:	810007b7          	lui	a5,0x81000
- 2c8:	00001737          	lui	a4,0x1
+ 2c8:	10000713          	addi	a4,zero,256
  2cc:	00112623          	sw	ra,12(sp)
  2d0:	00e7a223          	sw	a4,4(a5) # 81000004 <main+0x80fffd44>
  2d4:	f5dff0ef          	jal	ra,230 <TCNT_start>
