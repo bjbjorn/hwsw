@@ -2,7 +2,6 @@
 
 void TCNT_start(void) {
     TCNT_CR = TCNT_CR | TCNT_CR_CS_ON;
-    TCNT_CMP = 0xffff;
 }
 
 void TCNT_start_div8(void) {
