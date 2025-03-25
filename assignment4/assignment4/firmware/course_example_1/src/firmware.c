@@ -18,7 +18,7 @@ void irq_handler(unsigned int cause) {
 
 
 void main(void) {
-    unsigned int i = 1;
+    unsigned int i = 0;
 //    TCNT_CMP = 0xc65d40;  // for pynq board
     TCNT_CMP = 0x100;   // for simulation
     TCNT_start();
