@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "sensor.h"
 #include "tcnt.h"
 
@@ -9,16 +8,11 @@
 #define OUT_REG0_ADDRESS (OUT_BASEAxDDRESS + 0*4)
 #define OUTPUT           (*(volatile unsigned int *) OUT_REG0_ADDRESS)
 
-// extern unsigned int sw_mult(unsigned int x, unsigned int y);
-// Replace with your actual implementation
-unsigned int sw_mult(unsigned int x, unsigned int y) {
-    unsigned int result = 0;
-    for (int i = 0; i < 32; i++) {
-        if (y & (1 << i)) result += x << i;
-    }
-    return result;
-}
 
+extern unsigned int sw_mult(unsigned int x, unsigned int y);
+
+void irq_handler(unsigned int cause) {
+}
 
 void initialise(unsigned char r[C_WIDTH][C_HEIGHT], unsigned char g[C_WIDTH][C_HEIGHT], unsigned char b[C_WIDTH][C_HEIGHT], unsigned char a[C_WIDTH][C_HEIGHT]) {
     unsigned char w, h;
