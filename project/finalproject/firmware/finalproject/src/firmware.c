@@ -75,27 +75,27 @@ int main(void) {
     OUTPUT = 'f';
     // printf("OUTPUT = %c\n", 'f');
 
-    OUTPUT = 0x0; // Width MSB
+    OUTPUT = 0x00; // Width MSB
     // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x0;
+    OUTPUT = 0x00;
     // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x0;
+    OUTPUT = 0x00;
     // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x0; // Width LSB = 8
-    // printf("OUTPUT = 0x%X\n", 0x0);
-
-    OUTPUT = 0x0; // Height MSB
-    // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x0;
-    // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x0;
-    // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x0; // Height LSB = 8
+    OUTPUT = 0x08; // Width LSB = 8
     // printf("OUTPUT = 0x%X\n", 0x0);
 
-    OUTPUT = 0x0; // Channels: 4 (RGBA)
+    OUTPUT = 0x00; // Height MSB
     // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x0; // Colours: 0 = sRGB
+    OUTPUT = 0x00;
+    // printf("OUTPUT = 0x%X\n", 0x0);
+    OUTPUT = 0x00;
+    // printf("OUTPUT = 0x%X\n", 0x0);
+    OUTPUT = 0x08; // Height LSB = 8
+    // printf("OUTPUT = 0x%X\n", 0x0);
+
+    OUTPUT = 0x04; // Channels: 4 (RGBA)
+    // printf("OUTPUT = 0x%X\n", 0x0);
+    OUTPUT = 0x00; // Colours: 0 = sRGB
     // printf("OUTPUT = 0x%X\n", 0x0);
     
     /* Loop over pixels */

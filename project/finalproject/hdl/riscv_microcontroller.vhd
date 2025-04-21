@@ -21,7 +21,7 @@ entity riscv_microcontroller is
         sys_clock : in STD_LOGIC;
         sys_reset : in STD_LOGIC;
         external_irq : in STD_LOGIC;
-        gpio_leds : out STD_LOGIC_VECTOR(3 downto 0)
+        gpio_leds : out STD_LOGIC_VECTOR(31 downto 0)
     );
 end entity riscv_microcontroller;
 
@@ -32,7 +32,7 @@ architecture Behavioural of riscv_microcontroller is
     signal sys_clock_i : STD_LOGIC;
     signal sys_reset_i : STD_LOGIC;
     signal external_irq_i : STD_LOGIC;
-    signal gpio_leds_o : STD_LOGIC_VECTOR(3 downto 0);
+    signal gpio_leds_o : STD_LOGIC_VECTOR(31 downto 0);
 
     -- dmem
     signal dmem_do : STD_LOGIC_VECTOR(31 downto 0);
@@ -72,7 +72,7 @@ begin
     external_irq_i <= external_irq;
     gpio_leds <= gpio_leds_o;
 
-    gpio_leds_o <= leds(3 downto 0);
+    gpio_leds_o <= leds(31 downto 0);
 
 
     -------------------------------------------------------------------------------
@@ -150,15 +150,6 @@ begin
         clock => clock,
         reset => reset,
         irq => timer_irq,
-        iface_di => dmem_di,
-        iface_a => dmem_a,
-        iface_we => dmem_we,
-        iface_do => dmem_do_tcnt
-    );
-    
-    wrapped_sensor_inst00: component wrapped_sensor generic map(G_WIDTH => C_WIDTH) port map (
-        clock => clock,
-        reset => reset,
         iface_di => dmem_di,
         iface_a => dmem_a,
         iface_we => dmem_we,
