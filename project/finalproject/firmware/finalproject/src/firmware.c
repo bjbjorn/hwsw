@@ -4,8 +4,8 @@
 #define C_WIDTH 8
 #define C_HEIGHT 8
 
-#define OUT_BASEAxDDRESS 0x80000000
-#define OUT_REG0_ADDRESS (OUT_BASEAxDDRESS + 0*4)
+#define OUT_BASEADDRESS 0x80000000
+#define OUT_REG0_ADDRESS (OUT_BASEADRESS + 0*4)
 #define OUTPUT           (*(volatile unsigned int *) OUT_REG0_ADDRESS)
 
 
@@ -36,7 +36,6 @@ void initialise(unsigned char r[C_WIDTH][C_HEIGHT], unsigned char g[C_WIDTH][C_H
 }
 
 int main(void) {
-    // printf("Starting...\n");
     unsigned char r[C_HEIGHT][C_WIDTH];
     unsigned char g[C_HEIGHT][C_WIDTH];
     unsigned char b[C_HEIGHT][C_WIDTH];
@@ -63,40 +62,25 @@ int main(void) {
     for(unsigned char i=0;i<64;i++) {
         running_array[i] = 0;
     }
-    // printf("Initialised arrays\n");
 
     /* Header */
     OUTPUT = 'q';
-    // printf("OUTPUT = %c\n", 'q');
     OUTPUT = 'o';
-    // printf("OUTPUT = %c\n", 'o');
     OUTPUT = 'i';
-    // printf("OUTPUT = %c\n", 'i');
     OUTPUT = 'f';
-    // printf("OUTPUT = %c\n", 'f');
 
-    OUTPUT = 0x00; // Width MSB
-    // printf("OUTPUT = 0x%X\n", 0x0);
     OUTPUT = 0x00;
-    // printf("OUTPUT = 0x%X\n", 0x0);
     OUTPUT = 0x00;
-    // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x08; // Width LSB = 8
-    // printf("OUTPUT = 0x%X\n", 0x0);
+    OUTPUT = 0x00;
+    OUTPUT = 0x08;
 
-    OUTPUT = 0x00; // Height MSB
-    // printf("OUTPUT = 0x%X\n", 0x0);
     OUTPUT = 0x00;
-    // printf("OUTPUT = 0x%X\n", 0x0);
     OUTPUT = 0x00;
-    // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x08; // Height LSB = 8
-    // printf("OUTPUT = 0x%X\n", 0x0);
+    OUTPUT = 0x00;
+    OUTPUT = 0x08;
 
-    OUTPUT = 0x04; // Channels: 4 (RGBA)
-    // printf("OUTPUT = 0x%X\n", 0x0);
-    OUTPUT = 0x00; // Colours: 0 = sRGB
-    // printf("OUTPUT = 0x%X\n", 0x0);
+    OUTPUT = 0x03;
+    OUTPUT = 0x00;
     
     /* Loop over pixels */
     for(unsigned char h=0;h<C_HEIGHT;h++) {
@@ -112,7 +96,6 @@ int main(void) {
             
                 if (rle == 62) {
                     OUTPUT = (0b11000000 | (rle - 1));
-                    // printf("OUTPUT = 0x%X\n", (0b11000000 | (rle - 1)));
                     rle = -1;
                 }
                 continue;
@@ -120,7 +103,6 @@ int main(void) {
             
             if (rle > 0) {
                 OUTPUT = (0b11000000 | (rle - 1));
-                // printf("OUTPUT = 0x%X\n", (0b11000000 | (rle - 1)));
                 rle = -1;
             }
             
@@ -129,30 +111,20 @@ int main(void) {
             
             if (running_array[index_pos] == packed) {
                 OUTPUT = index_pos;
-                // printf("OUTPUT = 0x%X\n", index_pos);
             } else {
                 running_array[index_pos] = packed;
             
                 if (ca == a_prev) {
                     OUTPUT = 0xFE;
-                    // printf("OUTPUT = 0x%X\n", 0xFE);
                     OUTPUT = cr;
-                    // printf("OUTPUT = 0x%X\n", cr);
                     OUTPUT = cg;
-                    // printf("OUTPUT = 0x%X\n", cg);
                     OUTPUT = cb;
-                    // printf("OUTPUT = 0x%X\n", cb);
                 } else {
                     OUTPUT = 0xFF;
-                    // printf("OUTPUT = 0x%X\n", 0xFF);
                     OUTPUT = cr;
-                    // printf("OUTPUT = 0x%X\n", cr);
                     OUTPUT = cg;
-                    // printf("OUTPUT = 0x%X\n", cg);
                     OUTPUT = cb;
-                    // printf("OUTPUT = 0x%X\n", cb);
                     OUTPUT = ca;
-                    // printf("OUTPUT = 0x%X\n", ca);
                 }
             }
             
