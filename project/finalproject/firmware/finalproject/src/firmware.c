@@ -5,7 +5,7 @@
 #define C_WIDTH 8
 #define C_HEIGHT 8
 
-#define OUT_BASE_ADDRESS 0x82000000
+#define OUT_BASE_ADDRESS 0x80000000
 #define OUT_REG0_ADDRESS (OUT_BASE_ADDRESS + 0*4)
 #define OUTPUT           (*(volatile unsigned int *) OUT_REG0_ADDRESS)
 
