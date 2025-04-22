@@ -311,9 +311,9 @@ Disassembly of section .text:
  43c:	21010713          	addi	a4,sp,528
  440:	00478793          	addi	a5,a5,4
  444:	fee79ae3          	bne	a5,a4,438 <main+0x50>
- 448:	800007b7          	lui	a5,0x80000
+ 448:	820007b7          	lui	a5,0x82000
  44c:	07100713          	addi	a4,zero,113
- 450:	00e7a023          	sw	a4,0(a5) # 80000000 <main+0x7ffffc18>
+ 450:	00e7a023          	sw	a4,0(a5) # 82000000 <main+0x81fffc18>
  454:	06f00713          	addi	a4,zero,111
  458:	00e7a023          	sw	a4,0(a5)
  45c:	06900713          	addi	a4,zero,105
@@ -338,7 +338,7 @@ Disassembly of section .text:
  4a8:	00000613          	addi	a2,zero,0
  4ac:	00000693          	addi	a3,zero,0
  4b0:	00000793          	addi	a5,zero,0
- 4b4:	80000937          	lui	s2,0x80000
+ 4b4:	82000937          	lui	s2,0x82000
  4b8:	ffe00d93          	addi	s11,zero,-2
  4bc:	ffe00c93          	addi	s9,zero,-2
  4c0:	ff8b8b13          	addi	s6,s7,-8
@@ -365,9 +365,9 @@ Disassembly of section .text:
  514:	41845413          	srai	s0,s0,0x18
  518:	03e00593          	addi	a1,zero,62
  51c:	00b41a63          	bne	s0,a1,530 <main+0x148>
- 520:	800005b7          	lui	a1,0x80000
+ 520:	820005b7          	lui	a1,0x82000
  524:	0fd00513          	addi	a0,zero,253
- 528:	00a5a023          	sw	a0,0(a1) # 80000000 <main+0x7ffffc18>
+ 528:	00a5a023          	sw	a0,0(a1) # 82000000 <main+0x81fffc18>
  52c:	fff00413          	addi	s0,zero,-1
  530:	001b0b13          	addi	s6,s6,1
  534:	f96b98e3          	bne	s7,s6,4c4 <main+0xdc>
@@ -377,10 +377,10 @@ Disassembly of section .text:
  544:	00805a63          	bge	zero,s0,558 <main+0x170>
  548:	fff40413          	addi	s0,s0,-1
  54c:	0c046413          	ori	s0,s0,192
- 550:	800007b7          	lui	a5,0x80000
- 554:	0087a023          	sw	s0,0(a5) # 80000000 <main+0x7ffffc18>
- 558:	800007b7          	lui	a5,0x80000
- 55c:	0007a023          	sw	zero,0(a5) # 80000000 <main+0x7ffffc18>
+ 550:	820007b7          	lui	a5,0x82000
+ 554:	0087a023          	sw	s0,0(a5) # 82000000 <main+0x81fffc18>
+ 558:	820007b7          	lui	a5,0x82000
+ 55c:	0007a023          	sw	zero,0(a5) # 82000000 <main+0x81fffc18>
  560:	0007a023          	sw	zero,0(a5)
  564:	0007a023          	sw	zero,0(a5)
  568:	0007a023          	sw	zero,0(a5)
@@ -408,7 +408,7 @@ Disassembly of section .text:
  5c0:	00805a63          	bge	zero,s0,5d4 <main+0x1ec>
  5c4:	fff40413          	addi	s0,s0,-1
  5c8:	0c046413          	ori	s0,s0,192
- 5cc:	00892023          	sw	s0,0(s2) # 80000000 <main+0x7ffffc18>
+ 5cc:	00892023          	sw	s0,0(s2) # 82000000 <main+0x81fffc18>
  5d0:	fff00413          	addi	s0,zero,-1
  5d4:	00300593          	addi	a1,zero,3
  5d8:	00098513          	addi	a0,s3,0
@@ -482,8 +482,8 @@ Disassembly of section .text:
  6e8:	00258693          	addi	a3,a1,2
  6ec:	00d7e7b3          	or	a5,a5,a3
  6f0:	0ff7f793          	andi	a5,a5,255
- 6f4:	800006b7          	lui	a3,0x80000
- 6f8:	00f6a023          	sw	a5,0(a3) # 80000000 <main+0x7ffffc18>
+ 6f4:	820006b7          	lui	a3,0x82000
+ 6f8:	00f6a023          	sw	a5,0(a3) # 82000000 <main+0x81fffc18>
  6fc:	000a8613          	addi	a2,s5,0
  700:	000a0693          	addi	a3,s4,0
  704:	00098793          	addi	a5,s3,0
