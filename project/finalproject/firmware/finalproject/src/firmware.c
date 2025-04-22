@@ -9,6 +9,24 @@
 #define OUT_REG0_ADDRESS (OUT_BASE_ADDRESS + 0*4)
 #define OUTPUT           (*(volatile unsigned int *) OUT_REG0_ADDRESS)
 
+
+unsigned char r[C_HEIGHT][C_WIDTH];
+unsigned char g[C_HEIGHT][C_WIDTH];
+unsigned char b[C_HEIGHT][C_WIDTH];
+unsigned char a[C_HEIGHT][C_WIDTH];
+
+unsigned char r_prev = 0;
+unsigned char g_prev = 0;
+unsigned char b_prev = 0;
+unsigned char a_prev = 255;
+
+signed char dr;
+signed char dg;
+signed char db;
+
+signed char rle = -1;
+unsigned int running_array[64];
+
 extern unsigned int sw_mult(unsigned int x, unsigned int y);// Replace with your actual implementation
 
 void irq_handler(unsigned int cause) {}
@@ -46,23 +64,6 @@ void initialise(unsigned char r[C_HEIGHT][C_WIDTH], unsigned char g[C_HEIGHT][C_
 }
 
 int main(void) {
-    unsigned char r[C_HEIGHT][C_WIDTH];
-    unsigned char g[C_HEIGHT][C_WIDTH];
-    unsigned char b[C_HEIGHT][C_WIDTH];
-    unsigned char a[C_HEIGHT][C_WIDTH];
-
-    unsigned char r_prev = 0;
-    unsigned char g_prev = 0;
-    unsigned char b_prev = 0;
-    unsigned char a_prev = 255;
-
-    signed char dr;
-    signed char dg;
-    signed char db;
-
-    signed char rle = -1;
-    unsigned int running_array[64];
-
     initialise(r, g, b, a);
     for(unsigned char i = 0; i < 64; i++) {
         running_array[i] = 0;
