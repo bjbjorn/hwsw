@@ -2,8 +2,8 @@
 #include "sensor.h"
 #include "tcnt.h"
 
-#define C_WIDTH 8
-#define C_HEIGHT 8
+#define C_WIDTH 75
+#define C_HEIGHT 50
 
 #define OUT_BASE_ADDRESS 0x80000000
 #define OUT_REG0_ADDRESS (OUT_BASE_ADDRESS + 0*4)
@@ -13,22 +13,34 @@ extern unsigned int sw_mult(unsigned int x, unsigned int y);// Replace with your
 
 void irq_handler(unsigned int cause) {}
 
+// void initialise(unsigned char r[C_WIDTH][C_HEIGHT], unsigned char g[C_WIDTH][C_HEIGHT], unsigned char b[C_WIDTH][C_HEIGHT], unsigned char a[C_WIDTH][C_HEIGHT]) {
+//     unsigned char w, h;
+//     for(h=0; h<4; h++) {
+//         for(w=0; w<4; w++) {
+//             r[h][w] = 255; g[h][w] = 0; b[h][w] = 0; a[h][w] = 255;
+//         }
+//         for(w=4; w<C_WIDTH; w++) {
+//             r[h][w] = 0; g[h][w] = 255; b[h][w] = 0; a[h][w] = 255;
+//         }
+//     }
+//     for(h=4; h<C_HEIGHT; h++) {
+//         for(w=0; w<4; w++) {
+//             r[h][w] = 0; g[h][w] = 0; b[h][w] = 255; a[h][w] = 255;
+//         }
+//         for(w=4; w<C_WIDTH; w++) {
+//             r[h][w] = 127; g[h][w] = 127; b[h][w] = 127; a[h][w] = 255;
+//         }
+//     }
+// }
+
 void initialise(unsigned char r[C_WIDTH][C_HEIGHT], unsigned char g[C_WIDTH][C_HEIGHT], unsigned char b[C_WIDTH][C_HEIGHT], unsigned char a[C_WIDTH][C_HEIGHT]) {
-    unsigned char w, h;
-    for(h=0; h<4; h++) {
-        for(w=0; w<4; w++) {
-            r[h][w] = 255; g[h][w] = 0; b[h][w] = 0; a[h][w] = 255;
-        }
-        for(w=4; w<C_WIDTH; w++) {
-            r[h][w] = 0; g[h][w] = 255; b[h][w] = 0; a[h][w] = 255;
-        }
-    }
-    for(h=4; h<C_HEIGHT; h++) {
-        for(w=0; w<4; w++) {
-            r[h][w] = 0; g[h][w] = 0; b[h][w] = 255; a[h][w] = 255;
-        }
-        for(w=4; w<C_WIDTH; w++) {
-            r[h][w] = 127; g[h][w] = 127; b[h][w] = 127; a[h][w] = 255;
+    for (unsigned char h = 0; h < C_HEIGHT; h++) {
+        for (unsigned char w = 0; w < C_WIDTH; w++) {
+            unsigned int pixel = SENSOR_fetch();
+            r[h][w] = (pixel >> 24) & 0xFF;
+            g[h][w] = (pixel >> 16) & 0xFF;
+            b[h][w] = (pixel >> 8)  & 0xFF;
+            a[h][w] = (pixel >> 0)  & 0xFF;
         }
     }
 }
