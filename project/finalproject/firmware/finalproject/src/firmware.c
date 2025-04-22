@@ -10,22 +10,6 @@
 #define OUTPUT           (*(volatile unsigned int *) OUT_REG0_ADDRESS)
 
 
-unsigned char r[C_HEIGHT][C_WIDTH];
-unsigned char g[C_HEIGHT][C_WIDTH];
-unsigned char b[C_HEIGHT][C_WIDTH];
-unsigned char a[C_HEIGHT][C_WIDTH];
-
-unsigned char r_prev = 0;
-unsigned char g_prev = 0;
-unsigned char b_prev = 0;
-unsigned char a_prev = 255;
-
-signed char dr;
-signed char dg;
-signed char db;
-
-signed char rle = -1;
-unsigned int running_array[64];
 
 extern unsigned int sw_mult(unsigned int x, unsigned int y);// Replace with your actual implementation
 
@@ -64,7 +48,36 @@ void initialise(unsigned char r[C_HEIGHT][C_WIDTH], unsigned char g[C_HEIGHT][C_
 }
 
 int main(void) {
-    initialise(r, g, b, a);
+
+    unsigned char r[C_HEIGHT][C_WIDTH];
+    unsigned char g[C_HEIGHT][C_WIDTH];
+    unsigned char b[C_HEIGHT][C_WIDTH];
+    unsigned char a[C_HEIGHT][C_WIDTH];
+    
+    //initialise(r, g, b, a);
+    for (unsigned char h = 0; h < C_HEIGHT; h++) {
+        for (unsigned char w = 0; w < C_WIDTH; w++) {
+            unsigned int pixel = SENSOR_fetch();
+            r[h][w] = (pixel >> 24) & 0xFF;
+            g[h][w] = (pixel >> 16) & 0xFF;
+            b[h][w] = (pixel >> 8)  & 0xFF;
+            a[h][w] = (pixel >> 0)  & 0xFF;
+        }
+    }
+    
+    unsigned char r_prev = 0;
+    unsigned char g_prev = 0;
+    unsigned char b_prev = 0;
+    unsigned char a_prev = 255;
+    
+    signed char dr;
+    signed char dg;
+    signed char db;
+    
+    signed char rle = -1;
+    unsigned int running_array[64];
+
+
     for(unsigned char i = 0; i < 64; i++) {
         running_array[i] = 0;
     }

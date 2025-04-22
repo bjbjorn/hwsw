@@ -158,7 +158,6 @@ begin
         iface_do => dmem_do_tcnt
     );
     
-    
     wrapped_sensor_inst00: component wrapped_sensor port map (
         clock => clock,
         reset => reset,
