@@ -33,23 +33,23 @@ void irq_handler(unsigned int cause) {}
 //     }
 // }
 
-void initialise(unsigned char r[C_WIDTH][C_HEIGHT], unsigned char g[C_WIDTH][C_HEIGHT], unsigned char b[C_WIDTH][C_HEIGHT], unsigned char a[C_WIDTH][C_HEIGHT]) {
+void initialise(unsigned char r[C_HEIGHT][C_WIDTH], unsigned char g[C_HEIGHT][C_WIDTH], unsigned char b[C_HEIGHT][C_WIDTH], unsigned char a[C_HEIGHT][C_WIDTH]) {
     for (unsigned char h = 0; h < C_HEIGHT; h++) {
         for (unsigned char w = 0; w < C_WIDTH; w++) {
             unsigned int pixel = SENSOR_fetch();
-            r[w][h] = (pixel >> 24) & 0xFF;
-            g[w][h] = (pixel >> 16) & 0xFF;
-            b[w][h] = (pixel >> 8)  & 0xFF;
-            a[w][h] = (pixel >> 0)  & 0xFF;
+            r[h][w] = (pixel >> 24) & 0xFF;
+            g[h][w] = (pixel >> 16) & 0xFF;
+            b[h][w] = (pixel >> 8)  & 0xFF;
+            a[h][w] = (pixel >> 0)  & 0xFF;
         }
     }
 }
 
 int main(void) {
-    unsigned char r[C_WIDTH][C_HEIGHT];
-    unsigned char g[C_WIDTH][C_HEIGHT];
-    unsigned char b[C_WIDTH][C_HEIGHT];
-    unsigned char a[C_WIDTH][C_HEIGHT];
+    unsigned char r[C_HEIGHT][C_WIDTH];
+    unsigned char g[C_HEIGHT][C_WIDTH];
+    unsigned char b[C_HEIGHT][C_WIDTH];
+    unsigned char a[C_HEIGHT][C_WIDTH];
 
     unsigned char r_prev = 0;
     unsigned char g_prev = 0;
@@ -89,10 +89,10 @@ int main(void) {
 
     for(unsigned char h = 0; h < C_HEIGHT; h++) {
         for(unsigned char w = 0; w < C_WIDTH; w++) {
-            unsigned char cr = r[w][h];
-            unsigned char cg = g[w][h];
-            unsigned char cb = b[w][h];
-            unsigned char ca = a[w][h];
+            unsigned char cr = r[h][w];
+            unsigned char cg = g[h][w];
+            unsigned char cb = b[h][w];
+            unsigned char ca = a[h][w];
 
             if (cr == r_prev && cg == g_prev && cb == b_prev && ca == a_prev) {
                 if (rle == -1) rle = 1;
