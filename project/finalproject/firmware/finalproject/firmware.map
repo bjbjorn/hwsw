@@ -23,12 +23,12 @@ RAM              0x00002000         0x00002000         xrw
 Linker script and memory map
 
 
-.text           0x00000000      0x8a8
+.text           0x00000000      0x7c0
                 0x00000000                        . = 0x0
  *(.init)
  .init          0x00000000      0x230 build/start.o
                 0x00000000                start
-                0x000001d8                sw_mult
+                0x000001d0                sw_mult
  *(.text*)
  .text          0x00000230       0x28 build/sensor.o
                 0x00000230                SENSOR_fetch
@@ -37,12 +37,11 @@ Linker script and memory map
                 0x0000026c                TCNT_stop
                 0x00000280                TCNT_start_div8
                 0x000002a8                TCNT_start_div16
- .text          0x000002d0       0xec build/firmware.o
+ .text          0x000002d0        0x4 build/firmware.o
                 0x000002d0                irq_handler
-                0x000002d4                initialise
- .text.startup  0x000003bc      0x4ec build/firmware.o
-                0x000003bc                main
- .text          0x000008a8        0x0 build/start.o
+ .text.startup  0x000002d4      0x4ec build/firmware.o
+                0x000002d4                main
+ .text          0x000007c0        0x0 build/start.o
 
 .data           0x00002000        0x0
                 0x00000000                        . = 0x0
