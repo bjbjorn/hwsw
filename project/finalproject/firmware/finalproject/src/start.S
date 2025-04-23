@@ -142,10 +142,10 @@ do_reset:
     /* call main function */
     jal ra, main
 
-    /* trap */
-    ebreak
+    # /* trap */
+    # ebreak
 
-    jal ra, main
+    # jal ra, main
     j done
 
 # Software multiplication. It returns the product of a0 and a1
