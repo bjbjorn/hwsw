@@ -98,7 +98,7 @@ int main(void) {
             unsigned char b = (pixel >> 8)  & 0xFF;
             unsigned char a = (pixel >> 0)  & 0xFF;
 
-            if (cr == r_prev && cg == g_prev && cb == b_prev && ca == a_prev) {
+            if (r == r_prev && g == g_prev && b == b_prev && a == a_prev) {
                 if (rle == -1) rle = 1;
                 else rle++;
 
@@ -115,18 +115,18 @@ int main(void) {
             }
 
             unsigned char index_pos = (sw_mult(cr,3) + sw_mult(cg,5) + sw_mult(cb,7)+ sw_mult(ca,11)) & 63;
-            unsigned int packed = ((unsigned int)cr << 24) | ((unsigned int)cg << 16) | ((unsigned int)cb << 8)  | (unsigned int)ca;
+            unsigned int packed = ((unsigned int)r << 24) | ((unsigned int)g << 16) | ((unsigned int)b << 8)  | (unsigned int)a;
 
             if (running_array[index_pos] == packed) {
                 OUTPUT = index_pos;
             } else {
                 running_array[index_pos] = packed;
 
-                dr = cr - r_prev;
-                dg = cg - g_prev;
-                db = cb - b_prev;
+                dr = r - r_prev;
+                dg = g - g_prev;
+                db = b - b_prev;
 
-                if (ca == a_prev &&
+                if (a == a_prev &&
                     dr >= -2 && dr <= 1 &&
                     dg >= -2 && dg <= 1 &&
                     db >= -2 && db <= 1) {
@@ -135,30 +135,30 @@ int main(void) {
                         ((dg + 2) << 2) |
                         (db + 2);
                     OUTPUT = diff_byte;
-                    r_prev = cr;
-                    g_prev = cg;
-                    b_prev = cb;
+                    r_prev = r;
+                    g_prev = g;
+                    b_prev = b;
                     continue;
                 }
 
-                if (ca == a_prev) {
+                if (a == a_prev) {
                     OUTPUT = 0xFE;
-                    OUTPUT = cr;
-                    OUTPUT = cg;
-                    OUTPUT = cb;
+                    OUTPUT = r;
+                    OUTPUT = g;
+                    OUTPUT = b;
                 } else {
                     OUTPUT = 0xFF;
-                    OUTPUT = cr;
-                    OUTPUT = cg;
-                    OUTPUT = cb;
-                    OUTPUT = ca;
+                    OUTPUT = r;
+                    OUTPUT = g;
+                    OUTPUT = b;
+                    OUTPUT = a;
                 }
             }
 
-            r_prev = cr;
-            g_prev = cg;
-            b_prev = cb;
-            a_prev = ca;
+            r_prev = r;
+            g_prev = g;
+            b_prev = b;
+            a_prev = a;
         }
     }
     if (rle > 0) {
