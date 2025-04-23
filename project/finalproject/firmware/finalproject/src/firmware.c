@@ -114,7 +114,7 @@ int main(void) {
                 rle = -1;
             }
 
-            unsigned char index_pos = (sw_mult(cr,3) + sw_mult(cg,5) + sw_mult(cb,7)+ sw_mult(ca,11)) & 63;
+            unsigned char index_pos = (sw_mult(r,3) + sw_mult(g,5) + sw_mult(b,7)+ sw_mult(a,11)) & 63;
             unsigned int packed = ((unsigned int)r << 24) | ((unsigned int)g << 16) | ((unsigned int)b << 8)  | (unsigned int)a;
 
             if (running_array[index_pos] == packed) {
