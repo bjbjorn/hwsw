@@ -6,9 +6,6 @@
 #define OUT_REG0_ADDRESS (OUT_BASE_ADDRESS + 0*4)
 #define OUTPUT           (*(volatile unsigned int *) OUT_REG0_ADDRESS)
 
-unsigned char C_WIDTH = SENSOR_get_width();
-unsigned char C_HEIGHT = SENSOR_get_height();
-
 extern unsigned int sw_mult(unsigned int x, unsigned int y);// Replace with your actual implementation
 
 void irq_handler(unsigned int cause) {}
@@ -46,6 +43,9 @@ void irq_handler(unsigned int cause) {}
 // }
 
 int main(void) {
+
+    unsigned char C_WIDTH = SENSOR_get_width();
+    unsigned char C_HEIGHT = SENSOR_get_height();
 
     unsigned char r[C_HEIGHT][C_WIDTH];
     unsigned char g[C_HEIGHT][C_WIDTH];
