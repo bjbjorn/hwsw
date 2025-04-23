@@ -46,22 +46,12 @@ int main(void) {
 
     unsigned char C_WIDTH = SENSOR_get_width();
     unsigned char C_HEIGHT = SENSOR_get_height();
-
-    unsigned char r[C_HEIGHT][C_WIDTH];
-    unsigned char g[C_HEIGHT][C_WIDTH];
-    unsigned char b[C_HEIGHT][C_WIDTH];
-    unsigned char a[C_HEIGHT][C_WIDTH];
     
     //initialise(r, g, b, a);
-    for (unsigned char h = 0; h < C_HEIGHT; h++) {
-        for (unsigned char w = 0; w < C_WIDTH; w++) {
-            unsigned int pixel = SENSOR_fetch();
-            r[h][w] = (pixel >> 24) & 0xFF;
-            g[h][w] = (pixel >> 16) & 0xFF;
-            b[h][w] = (pixel >> 8)  & 0xFF;
-            a[h][w] = (pixel >> 0)  & 0xFF;
-        }
-    }
+    // for (unsigned char h = 0; h < C_HEIGHT; h++) {
+    //     for (unsigned char w = 0; w < C_WIDTH; w++) {
+    //     }
+    // }
     
     unsigned char r_prev = 0;
     unsigned char g_prev = 0;
@@ -101,10 +91,12 @@ int main(void) {
 
     for(unsigned char h = 0; h < C_HEIGHT; h++) {
         for(unsigned char w = 0; w < C_WIDTH; w++) {
-            unsigned char cr = r[h][w];
-            unsigned char cg = g[h][w];
-            unsigned char cb = b[h][w];
-            unsigned char ca = a[h][w];
+
+            unsigned int pixel = SENSOR_fetch();
+            unsigned char r = (pixel >> 24) & 0xFF;
+            unsigned char g = (pixel >> 16) & 0xFF;
+            unsigned char b = (pixel >> 8)  & 0xFF;
+            unsigned char a = (pixel >> 0)  & 0xFF;
 
             if (cr == r_prev && cg == g_prev && cb == b_prev && ca == a_prev) {
                 if (rle == -1) rle = 1;
