@@ -2,14 +2,12 @@
 #include "sensor.h"
 #include "tcnt.h"
 
-#define C_WIDTH 75
-#define C_HEIGHT 50
-
 #define OUT_BASE_ADDRESS 0x80000000
 #define OUT_REG0_ADDRESS (OUT_BASE_ADDRESS + 0*4)
 #define OUTPUT           (*(volatile unsigned int *) OUT_REG0_ADDRESS)
 
-
+unsigned char C_WIDTH = SENSOR_get_width();
+unsigned char C_HEIGHT = SENSOR_get_height();
 
 extern unsigned int sw_mult(unsigned int x, unsigned int y);// Replace with your actual implementation
 
