@@ -8,7 +8,7 @@
 
 // extern unsigned int sw_mult(unsigned int x, unsigned int y);// Replace with your actual implementation
 
-unsigned int sw_mult(unsigned int a, unsigned int b) {
+unsigned int sw_mult2(unsigned int a, unsigned int b) {
     unsigned int result = 0;
 
     while (b > 0) {
@@ -128,7 +128,7 @@ int main(void) {
                 rle = -1;
             }
 
-            unsigned char index_pos = (sw_mult(r,3) + sw_mult(g,5) + sw_mult(b,7)+ sw_mult(a,11)) & 63;
+            unsigned char index_pos = (sw_mult2(r,3) + sw_mult2(g,5) + sw_mult2(b,7)+ sw_mult2(a,11)) & 63;
             unsigned int packed = ((unsigned int)r << 24) | ((unsigned int)g << 16) | ((unsigned int)b << 8)  | (unsigned int)a;
 
             if (running_array[index_pos] == packed) {
