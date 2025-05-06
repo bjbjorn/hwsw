@@ -83,6 +83,8 @@ int main(void) {
     for(unsigned char i = 0; i < 64; i++) {
         running_array[i] = 0;
     }
+    TCNT_start();
+
 
     /* Header */
     OUTPUT = (unsigned char)'q';
@@ -102,6 +104,9 @@ int main(void) {
 
     OUTPUT = 0x03;
     OUTPUT = 0x00;
+
+    TCNT_stop();
+    TCNT_CR = 0x00; // Stop the timer
 
     for(unsigned char h = 0; h < C_HEIGHT; h++) {
         for(unsigned char w = 0; w < C_WIDTH; w++) {
@@ -189,5 +194,7 @@ int main(void) {
     OUTPUT = 0x00;
     OUTPUT = 0x01;
 
+    // TCNT_stop();
+    // TCNT_CR = 0x00; // Stop the timer
     return 0;
 }
