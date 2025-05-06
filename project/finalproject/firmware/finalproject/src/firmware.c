@@ -22,7 +22,10 @@ unsigned int sw_mult2(unsigned int a, unsigned int b) {
     return result;
 }
 
-void irq_handler(unsigned int cause) {}
+void irq_handler(unsigned int cause) {
+    TCNT_CR = 0x17;
+    TCNT_CR = 0x3;
+}
 
 // void initialise(unsigned char r[C_WIDTH][C_HEIGHT], unsigned char g[C_WIDTH][C_HEIGHT], unsigned char b[C_WIDTH][C_HEIGHT], unsigned char a[C_WIDTH][C_HEIGHT]) {
 //     unsigned char w, h;
@@ -83,7 +86,8 @@ int main(void) {
     for(unsigned char i = 0; i < 64; i++) {
         running_array[i] = 0;
     }
-    TCNT_CMP = 0xffffff;
+    TCNT_CR = 0x3;
+    TCNT_CMP = 0xffffffff;
     TCNT_start();
 
 
@@ -105,9 +109,6 @@ int main(void) {
 
     OUTPUT = 0x03;
     OUTPUT = 0x00;
-
-    TCNT_stop();
-    TCNT_CR = 0x00; // Stop the timer
 
     for(unsigned char h = 0; h < C_HEIGHT; h++) {
         for(unsigned char w = 0; w < C_WIDTH; w++) {
