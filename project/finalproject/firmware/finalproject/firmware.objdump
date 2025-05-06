@@ -176,14 +176,14 @@ Disassembly of section .text:
 00000258 <TCNT_start>:
  258:	81000737          	lui	a4,0x81000
  25c:	00072783          	lw	a5,0(a4) # 81000000 <main+0x80fffcfc>
- 260:	0077e793          	ori	a5,a5,3
+ 260:	0037e793          	ori	a5,a5,3
  264:	00f72023          	sw	a5,0(a4)
  268:	00008067          	jalr	zero,0(ra)
 
 0000026c <TCNT_start_div8>:
  26c:	810007b7          	lui	a5,0x81000
  270:	0007a703          	lw	a4,0(a5) # 81000000 <main+0x80fffcfc>
- 274:	ff877713          	andi	a4,a4,-8
+ 274:	ffc77713          	andi	a4,a4,-4
  278:	00e7a023          	sw	a4,0(a5)
  27c:	0007a703          	lw	a4,0(a5)
  280:	00176713          	ori	a4,a4,1
@@ -193,7 +193,7 @@ Disassembly of section .text:
 0000028c <TCNT_start_div16>:
  28c:	810007b7          	lui	a5,0x81000
  290:	0007a703          	lw	a4,0(a5) # 81000000 <main+0x80fffcfc>
- 294:	ff877713          	andi	a4,a4,-8
+ 294:	ffc77713          	andi	a4,a4,-4
  298:	00e7a023          	sw	a4,0(a5)
  29c:	0007a703          	lw	a4,0(a5)
  2a0:	00276713          	ori	a4,a4,2
@@ -203,7 +203,7 @@ Disassembly of section .text:
 000002ac <TCNT_stop>:
  2ac:	81000737          	lui	a4,0x81000
  2b0:	00072783          	lw	a5,0(a4) # 81000000 <main+0x80fffcfc>
- 2b4:	ff87f793          	andi	a5,a5,-8
+ 2b4:	ffc7f793          	andi	a5,a5,-4
  2b8:	00f72023          	sw	a5,0(a4)
  2bc:	00008067          	jalr	zero,0(ra)
 
