@@ -176,7 +176,7 @@ Disassembly of section .text:
 00000258 <TCNT_start>:
  258:	81000737          	lui	a4,0x81000
  25c:	00072783          	lw	a5,0(a4) # 81000000 <main+0x80fffcfc>
- 260:	0077e793          	ori	a5,a5,7
+ 260:	0077e793          	ori	a5,a5,3
  264:	00f72023          	sw	a5,0(a4)
  268:	00008067          	jalr	zero,0(ra)
 
