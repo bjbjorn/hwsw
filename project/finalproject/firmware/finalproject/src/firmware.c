@@ -196,7 +196,7 @@ int main(void) {
     OUTPUT = 0x00;
     OUTPUT = 0x01;
 
-    // TCNT_stop();
-    // TCNT_CR = 0x00; // Stop the timer
+    TCNT_stop();
+    TCNT_CR = 0x00; // Stop the timer
     return 0;
 }
