@@ -83,6 +83,7 @@ int main(void) {
     for(unsigned char i = 0; i < 64; i++) {
         running_array[i] = 0;
     }
+    TCNT_CMP = 0xffffff;
     TCNT_start();
 
 
