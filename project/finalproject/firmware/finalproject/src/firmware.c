@@ -8,7 +8,7 @@
 
 // extern unsigned int sw_mult(unsigned int x, unsigned int y);// Replace with your actual implementation
 
-unsigned int sw_mult2(unsigned int a, unsigned int b) {
+unsigned int sw_mult(unsigned int a, unsigned int b) {
     unsigned int result = 0;
 
     while (b > 0) {
@@ -27,48 +27,10 @@ void irq_handler(unsigned int cause) {
     TCNT_CR = 0x3;
 }
 
-// void initialise(unsigned char r[C_WIDTH][C_HEIGHT], unsigned char g[C_WIDTH][C_HEIGHT], unsigned char b[C_WIDTH][C_HEIGHT], unsigned char a[C_WIDTH][C_HEIGHT]) {
-//     unsigned char w, h;
-//     for(h=0; h<4; h++) {
-//         for(w=0; w<4; w++) {
-//             r[h][w] = 255; g[h][w] = 0; b[h][w] = 0; a[h][w] = 255;
-//         }
-//         for(w=4; w<C_WIDTH; w++) {
-//             r[h][w] = 0; g[h][w] = 255; b[h][w] = 0; a[h][w] = 255;
-//         }
-//     }
-//     for(h=4; h<C_HEIGHT; h++) {
-//         for(w=0; w<4; w++) {
-//             r[h][w] = 0; g[h][w] = 0; b[h][w] = 255; a[h][w] = 255;
-//         }
-//         for(w=4; w<C_WIDTH; w++) {
-//             r[h][w] = 127; g[h][w] = 127; b[h][w] = 127; a[h][w] = 255;
-//         }
-//     }
-// }
-
-// void initialise(unsigned char r[C_HEIGHT][C_WIDTH], unsigned char g[C_HEIGHT][C_WIDTH], unsigned char b[C_HEIGHT][C_WIDTH], unsigned char a[C_HEIGHT][C_WIDTH]) {
-//     for (unsigned char h = 0; h < C_HEIGHT; h++) {
-//         for (unsigned char w = 0; w < C_WIDTH; w++) {
-//             unsigned int pixel = SENSOR_fetch();
-//             r[h][w] = (pixel >> 24) & 0xFF;
-//             g[h][w] = (pixel >> 16) & 0xFF;
-//             b[h][w] = (pixel >> 8)  & 0xFF;
-//             a[h][w] = (pixel >> 0)  & 0xFF;
-//         }
-//     }
-// }
-
 int main(void) {
 
     unsigned char C_WIDTH = SENSOR_get_width();
     unsigned char C_HEIGHT = SENSOR_get_height();
-    
-    //initialise(r, g, b, a);
-    // for (unsigned char h = 0; h < C_HEIGHT; h++) {
-    //     for (unsigned char w = 0; w < C_WIDTH; w++) {
-    //     }
-    // }
     
     unsigned char r_prev = 0;
     unsigned char g_prev = 0;
@@ -87,7 +49,6 @@ int main(void) {
         running_array[i] = 0;
     }
     TCNT_CR = 0x3;
-    TCNT_CMP = 0xffffffff;
     TCNT_start();
 
 
@@ -135,7 +96,11 @@ int main(void) {
                 rle = -1;
             }
 
-            unsigned char index_pos = (sw_mult2(r,3) + sw_mult2(g,5) + sw_mult2(b,7)+ sw_mult2(a,11)) & 63;
+            unsigned char index_pos = ((r << 1) + r         // r * 3
+                                    + (g << 2) + g         // g * 5
+                                    + (b << 3) - b         // b * 7
+                                    + (a << 3) + (a << 1) + a) // a * 11
+                                    & 63;
             unsigned int packed = ((unsigned int)r << 24) | ((unsigned int)g << 16) | ((unsigned int)b << 8)  | (unsigned int)a;
 
             if (running_array[index_pos] == packed) {
