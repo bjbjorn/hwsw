@@ -8,19 +8,19 @@
 
 // extern unsigned int sw_mult(unsigned int x, unsigned int y);// Replace with your actual implementation
 
-unsigned int sw_mult(unsigned int a, unsigned int b) {
-    unsigned int result = 0;
+// unsigned int sw_mult(unsigned int a, unsigned int b) {
+//     unsigned int result = 0;
 
-    while (b > 0) {
-        if (b & 1) { 
-            result += a;
-        }
-        a <<= 1; 
-        b >>= 1; 
-    }
+//     while (b > 0) {
+//         if (b & 1) { 
+//             result += a;
+//         }
+//         a <<= 1; 
+//         b >>= 1; 
+//     }
 
-    return result;
-}
+//     return result;
+// }
 
 void irq_handler(unsigned int cause) {
     TCNT_CR = 0x17;
