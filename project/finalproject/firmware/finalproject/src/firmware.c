@@ -95,7 +95,7 @@ int main(void) {
                 db = b - b_prev;
 
                 if (extra_data != 0x00) {
-                    OUTPUT = extra_data
+                    OUTPUT = extra_data;
                     r_prev = r;
                     g_prev = g;
                     b_prev = b;
