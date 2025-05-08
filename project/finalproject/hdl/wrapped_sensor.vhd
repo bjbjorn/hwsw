@@ -11,7 +11,7 @@
 --------------------------------------------------------------------------------
 library IEEE;
     use IEEE.STD_LOGIC_1164.ALL;
---    use IEEE.NUMERIC_STD.ALL;
+    use IEEE.NUMERIC_STD.ALL;
 
 library work;
     use work.PKG_hwswcd.ALL;
@@ -41,7 +41,7 @@ architecture Behavioural of wrapped_sensor is
     signal iface_we_i : STD_LOGIC;
     signal iface_do_o : STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
 
-    signal reg0, reg1, reg2: STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
+    signal reg0, reg1, reg2, reg3: STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
 
     signal address_within_range : STD_LOGIC;
     signal targeted_register : STD_LOGIC_VECTOR(17 downto 0);
@@ -50,6 +50,25 @@ architecture Behavioural of wrapped_sensor is
     signal sensor_re : STD_LOGIC;
     signal sensor_pixeldata : STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
     signal sensor_first : STD_LOGIC;
+    
+    signal sensor_pixeldata_prev : STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
+    
+    
+    alias r_prev : std_logic_vector(7 downto 0) is sensor_pixeldata_prev(31 downto 24);
+    alias g_prev : std_logic_vector(7 downto 0) is sensor_pixeldata_prev(23 downto 16);
+    alias b_prev : std_logic_vector(7 downto 0) is sensor_pixeldata_prev(15 downto 8);
+    alias a_prev : std_logic_vector(7 downto 0) is sensor_pixeldata_prev(7 downto 0);
+    
+    
+    alias r : std_logic_vector(7 downto 0) is sensor_pixeldata(31 downto 24);
+    alias g : std_logic_vector(7 downto 0) is sensor_pixeldata(23 downto 16);
+    alias b : std_logic_vector(7 downto 0) is sensor_pixeldata(15 downto 8);
+    alias a : std_logic_vector(7 downto 0) is sensor_pixeldata(7 downto 0);
+    
+    
+    -- Delta signals (as signed)
+    signal dr, dg, db : signed(8 downto 0);  -- 9-bit to prevent overflow
+    signal condition_met : boolean;
 
 begin
 
@@ -101,7 +120,7 @@ begin
     -------------------------------------------------------------------------------
     -- READ
     -------------------------------------------------------------------------------
-    PMUX: process(address_within_range, iface_we_i, targeted_register, reg0, reg1, reg2)
+    PMUX: process(address_within_range, iface_we_i, targeted_register, reg0, reg1, reg2, reg3)
     begin
         iface_do_o <= C_GND;
         if address_within_range = '1' and iface_we_i = '0' then 
@@ -109,10 +128,47 @@ begin
                 when "000000000000000000" => iface_do_o <= reg0;
                 when "000000000000000001" => iface_do_o <= reg1;
                 when "000000000000000010" => iface_do_o <= reg2;
+                when "000000000000000011" => iface_do_o <= reg3;
                 when others  => iface_do_o <= C_GND;
             end case;
         end if;
     end process;
+
+
+    PRO: process(clock_i)
+    begin
+    if rising_edge (clock_i) then
+            r_prev <= sensor_pixeldata_prev(31 downto 24);
+            g_prev <= sensor_pixeldata_prev(23 downto 16);
+            b_prev <= sensor_pixeldata_prev(15 downto 8);
+            a_prev <= sensor_pixeldata_prev(7 downto 0);
+            
+            r <= sensor_pixeldata(31 downto 24);
+            g <= sensor_pixeldata(23 downto 16);
+            b <= sensor_pixeldata(15 downto 8);
+            a <= sensor_pixeldata(7 downto 0);
+            
+            dr <= signed('0' & r) - signed('0' & r_prev);
+            dg <= signed('0' & g) - signed('0' & g_prev);
+            db <= signed('0' & b) - signed('0' & b_prev);
+            
+            condition_met <= (a = a_prev) and (dr >= -2) and (dr <= 1) and  (dg >= -2) and (dg <= 1) and (db >= -2) and (db <= 1);
+            
+            if reset = '1' then
+                reg3 <= (others => '0');
+            elsif condition_met then
+                reg3 <= "01" & 
+                      std_logic_vector(resize(unsigned(dr + 2), 2)) & 
+                      std_logic_vector(resize(unsigned(dg + 2), 2)) & 
+                      std_logic_vector(resize(unsigned(db + 2), 2));
+            else
+                reg3 <= (others => '0');
+            end if;
+            
+            sensor_pixeldata_prev <= sensor_pixeldata;
+        end if;
+    end process;
+
 
 
     -------------------------------------------------------------------------------

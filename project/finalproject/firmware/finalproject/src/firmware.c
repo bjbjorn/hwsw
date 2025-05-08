@@ -6,28 +6,14 @@
 #define OUT_REG0_ADDRESS (OUT_BASE_ADDRESS + 0*4)
 #define OUTPUT           (*(volatile unsigned int *) OUT_REG0_ADDRESS)
 
-// extern unsigned int sw_mult(unsigned int x, unsigned int y);// Replace with your actual implementation
-
-// unsigned int sw_mult(unsigned int a, unsigned int b) {
-//     unsigned int result = 0;
-
-//     while (b > 0) {
-//         if (b & 1) { 
-//             result += a;
-//         }
-//         a <<= 1; 
-//         b >>= 1; 
-//     }
-
-//     return result;
-// }
-
 void irq_handler(unsigned int cause) {
     TCNT_CR = 0x17;
     TCNT_CR = 0x3;
 }
 
 int main(void) {
+    TCNT_CR = 0x3;
+    TCNT_start();
 
     unsigned char C_WIDTH = SENSOR_get_width();
     unsigned char C_HEIGHT = SENSOR_get_height();
@@ -44,13 +30,9 @@ int main(void) {
     signed char rle = -1;
     unsigned int running_array[64];
 
-
     for(unsigned char i = 0; i < 64; i++) {
         running_array[i] = 0;
     }
-    TCNT_CR = 0x3;
-    TCNT_start();
-
 
     /* Header */
     OUTPUT = (unsigned char)'q';
@@ -74,7 +56,7 @@ int main(void) {
     for(unsigned char h = 0; h < C_HEIGHT; h++) {
         for(unsigned char w = 0; w < C_WIDTH; w++) {
 
-            unsigned int pixel = SENSOR_fetch();
+            unsigned int pixel, extra_data = SENSOR_fetch();
             unsigned char r = (pixel >> 24) & 0xFF;
             unsigned char g = (pixel >> 16) & 0xFF;
             unsigned char b = (pixel >> 8)  & 0xFF;
@@ -101,31 +83,42 @@ int main(void) {
                                     + (b << 3) - b         // b * 7
                                     + (a << 3) + (a << 1) + a) // a * 11
                                     & 63;
-            unsigned int packed = ((unsigned int)r << 24) | ((unsigned int)g << 16) | ((unsigned int)b << 8)  | (unsigned int)a;
+            // unsigned int packed = ((unsigned int)r << 24) | ((unsigned int)g << 16) | ((unsigned int)b << 8)  | (unsigned int)a;
 
-            if (running_array[index_pos] == packed) {
+            if (running_array[index_pos] == pixel) {
                 OUTPUT = index_pos;
             } else {
-                running_array[index_pos] = packed;
+                running_array[index_pos] = pixel;
 
                 dr = r - r_prev;
                 dg = g - g_prev;
                 db = b - b_prev;
 
-                if (a == a_prev &&
-                    dr >= -2 && dr <= 1 &&
-                    dg >= -2 && dg <= 1 &&
-                    db >= -2 && db <= 1) {
-                    unsigned char diff_byte = 0b01000000 |
-                        ((dr + 2) << 4) |
-                        ((dg + 2) << 2) |
-                        (db + 2);
-                    OUTPUT = diff_byte;
+                if (extra_data != 0x00) {
+                    OUTPUT = extra_data
                     r_prev = r;
                     g_prev = g;
                     b_prev = b;
                     continue;
                 }
+
+
+                // if (a == a_prev &&
+                //     dr >= -2 && dr <= 1 &&
+                //     dg >= -2 && dg <= 1 &&
+                //     db >= -2 && db <= 1) {
+                //     unsigned char diff_byte = 0b01000000 |
+                //         ((dr + 2) << 4) |
+                //         ((dg + 2) << 2) |
+                //         (db + 2);
+                //     OUTPUT = diff_byte;
+                //     r_prev = r;
+                //     g_prev = g;
+                //     b_prev = b;
+                //     continue;
+                // }
+
+                
 
                 if (a == a_prev) {
                     OUTPUT = 0xFE;
