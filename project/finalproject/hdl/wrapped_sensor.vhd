@@ -53,7 +53,6 @@ architecture Behavioural of wrapped_sensor is
     
     signal sensor_pixeldata_prev, sensor_pixeldata_cur : unsigned(C_WIDTH-1 downto 0);
     
-    
     alias r_prev : unsigned(7 downto 0) is sensor_pixeldata_prev(31 downto 24);
     alias g_prev : unsigned(7 downto 0) is sensor_pixeldata_prev(23 downto 16);
     alias b_prev : unsigned(7 downto 0) is sensor_pixeldata_prev(15 downto 8);
@@ -67,8 +66,11 @@ architecture Behavioural of wrapped_sensor is
     
     
     -- Delta signals (as signed)
-    signal dr, dg, db : signed(8 downto 0);  -- 9-bit to prevent overflow
+    signal dr, dg, db : signed(7 downto 0);
     signal condition_met : boolean;
+    signal is_reg1_address : STD_LOGIC;
+    signal is_reg1_address_prev : STD_LOGIC := '0';
+
 
 begin
 
@@ -87,11 +89,12 @@ begin
     -- PARSING
     -------------------------------------------------------------------------------
     address_within_range <= '1' when iface_a_i(C_WIDTH-1 downto C_PERIPHERAL_MASK_LOWINDEX) = C_SENSOR_BASE_ADDRESS_MASK else '0';
+    is_reg1_address <= '1' when iface_a_i = x"82000004" else '0';
     targeted_register <= iface_a_i(19 downto 2);
 
     sensor_re <= reg0(0);
     reg1 <= sensor_pixeldata;
-    sensor_pixeldata_cur <= unsigned(reg1);
+    sensor_pixeldata_cur <= unsigned(sensor_pixeldata);
     -- reg2 <= (0 => sensor_first, others => '0');
     -- reg2 <= x"00" & x"08" & x"08" & "0000000" & sensor_first;
     reg2 <= x"00" & x"4B" & x"32" & "0000000" & sensor_first;
@@ -106,35 +109,56 @@ begin
 --    b <= sensor_pixeldata_cur(15 downto 8);
 --    a <= sensor_pixeldata_cur(7 downto 0);
     
-    dr <= signed('0' & r) - signed('0' & r_prev);
-    dg <= signed('0' & g) - signed('0' & g_prev);
-    db <= signed('0' & b) - signed('0' & b_prev);
-    
+    dr <= signed(r) - signed(r_prev);
+    dg <= signed(g) - signed(g_prev);
+    db <= signed(b) - signed(b_prev);
     
     condition_met <= (dr >= -2) and (dr <= 1) and  (dg >= -2) and (dg <= 1) and (db >= -2) and (db <= 1);
 
 
+    PRO: process(clock_i)
+    begin
+    if rising_edge(clock_i) then
+            if reset = '1' then
+                reg3 <= (others => '0');
+            elsif condition_met then 
+                reg3 <= (31 downto 8 => '0') & "01" & 
+                std_logic_vector(resize(unsigned(dr + 2), 2)) & 
+                std_logic_vector(resize(unsigned(dg + 2), 2)) & 
+                std_logic_vector(resize(unsigned(db + 2), 2));
+            else
+                reg3 <= (others => '0');
+            end if;
+        end if;
+    end process;
+
     -------------------------------------------------------------------------------
     -- WRITE
     -------------------------------------------------------------------------------
+  
     PREG: process(clock_i)
     begin
         if rising_edge(clock_i) then
             if reset_i = '1' then 
                 reg0 <= (others => '0');
+                sensor_pixeldata_prev <= (others => '0');
             else
-                if address_within_range = '1' then 
+                is_reg1_address_prev <= is_reg1_address;
+                
+                if is_reg1_address = '1' and is_reg1_address_prev = '0' then
+                    sensor_pixeldata_prev <= sensor_pixeldata_cur;
+                end if;
+                
+                if address_within_range = '1' then
                     if iface_we_i = '1' then 
-                        if targeted_register = "000000000000000000" then 
+                        if targeted_register = "000000000000000000" then
                             reg0 <= iface_di_i;
-                            sensor_pixeldata_prev <= sensor_pixeldata_cur;
                         end if;
                     end if;
                 end if;
             end if;
         end if;
     end process;
-
 
     -------------------------------------------------------------------------------
     -- READ
@@ -152,24 +176,6 @@ begin
             end case;
         end if;
     end process;
-
-
-    PRO: process(clock_i, sensor_pixeldata, sensor_pixeldata_prev, dr, dg, dg, condition_met)
-    begin
-    if rising_edge(clock_i) then
-            if reset = '1' then
-                reg3 <= (others => '0');
-            elsif condition_met then 
-                reg3 <= (31 downto 8 => '0') & "01" & 
-                std_logic_vector(resize(unsigned(dr + 2), 2)) & 
-                std_logic_vector(resize(unsigned(dg + 2), 2)) & 
-                std_logic_vector(resize(unsigned(db + 2), 2));
-            else
-                reg3 <= (others => '0');
-            end if;
-        end if;
-    end process;
-
 
 
     -------------------------------------------------------------------------------

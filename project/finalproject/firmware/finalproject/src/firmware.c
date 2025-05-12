@@ -23,9 +23,9 @@ int main(void) {
     unsigned char b_prev = 0;
     unsigned char a_prev = 255;
     
-    signed char dr;
-    signed char dg;
-    signed char db;
+    // signed char dr;
+    // signed char dg;
+    // signed char db;
     
     signed char rle = -1;
     unsigned int running_array[64];
@@ -90,9 +90,9 @@ int main(void) {
             } else {
                 running_array[index_pos] = pixel;
 
-                dr = r - r_prev;
-                dg = g - g_prev;
-                db = b - b_prev;
+                // dr = r - r_prev;
+                // dg = g - g_prev;
+                // db = b - b_prev;
 
                 unsigned int extra_data = SENSOR_get_extra_data();
 
