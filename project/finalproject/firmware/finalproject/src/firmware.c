@@ -94,7 +94,7 @@ int main(void) {
                 dg = g - g_prev;
                 db = b - b_prev;
 
-                unsigned int extra_data = sensor_get_extra_data();
+                unsigned int extra_data = SENSOR_get_extra_data();
 
                 if (extra_data != 0x00) {
                     OUTPUT = extra_data;

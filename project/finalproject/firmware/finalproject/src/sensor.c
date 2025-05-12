@@ -5,7 +5,7 @@ unsigned int SENSOR_fetch(void) {
     pixeldata = SENSOR_PIXELDATA;
     SENSOR_CR |= SENSOR_CR_RE; 
     SENSOR_CR &= ~SENSOR_CR_RE; 
-    return pixeldata, extra_data;
+    return pixeldata;
 }
 
 
