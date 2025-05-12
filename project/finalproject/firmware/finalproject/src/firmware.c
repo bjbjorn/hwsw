@@ -56,7 +56,7 @@ int main(void) {
     for(unsigned char h = 0; h < C_HEIGHT; h++) {
         for(unsigned char w = 0; w < C_WIDTH; w++) {
 
-            unsigned int pixel, extra_data = SENSOR_fetch();
+            unsigned int pixel = SENSOR_fetch();
             unsigned char r = (pixel >> 24) & 0xFF;
             unsigned char g = (pixel >> 16) & 0xFF;
             unsigned char b = (pixel >> 8)  & 0xFF;
@@ -94,6 +94,8 @@ int main(void) {
                 dg = g - g_prev;
                 db = b - b_prev;
 
+                unsigned int extra_data = sensor_get_extra_data();
+
                 if (extra_data != 0x00) {
                     OUTPUT = extra_data;
                     r_prev = r;
@@ -101,7 +103,6 @@ int main(void) {
                     b_prev = b;
                     continue;
                 }
-
 
                 // if (a == a_prev &&
                 //     dr >= -2 && dr <= 1 &&

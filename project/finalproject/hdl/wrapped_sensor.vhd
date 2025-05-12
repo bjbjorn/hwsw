@@ -51,19 +51,19 @@ architecture Behavioural of wrapped_sensor is
     signal sensor_pixeldata : STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
     signal sensor_first : STD_LOGIC;
     
-    signal sensor_pixeldata_prev : STD_LOGIC_VECTOR(C_WIDTH-1 downto 0);
+    signal sensor_pixeldata_prev, sensor_pixeldata_cur : unsigned(C_WIDTH-1 downto 0);
     
     
-    alias r_prev : std_logic_vector(7 downto 0) is sensor_pixeldata_prev(31 downto 24);
-    alias g_prev : std_logic_vector(7 downto 0) is sensor_pixeldata_prev(23 downto 16);
-    alias b_prev : std_logic_vector(7 downto 0) is sensor_pixeldata_prev(15 downto 8);
-    alias a_prev : std_logic_vector(7 downto 0) is sensor_pixeldata_prev(7 downto 0);
+    alias r_prev : unsigned(7 downto 0) is sensor_pixeldata_prev(31 downto 24);
+    alias g_prev : unsigned(7 downto 0) is sensor_pixeldata_prev(23 downto 16);
+    alias b_prev : unsigned(7 downto 0) is sensor_pixeldata_prev(15 downto 8);
+    alias a_prev : unsigned(7 downto 0) is sensor_pixeldata_prev(7 downto 0);
     
     
-    alias r : std_logic_vector(7 downto 0) is sensor_pixeldata(31 downto 24);
-    alias g : std_logic_vector(7 downto 0) is sensor_pixeldata(23 downto 16);
-    alias b : std_logic_vector(7 downto 0) is sensor_pixeldata(15 downto 8);
-    alias a : std_logic_vector(7 downto 0) is sensor_pixeldata(7 downto 0);
+    alias r : unsigned(7 downto 0) is sensor_pixeldata_cur(31 downto 24);
+    alias g : unsigned(7 downto 0) is sensor_pixeldata_cur(23 downto 16);
+    alias b : unsigned(7 downto 0) is sensor_pixeldata_cur(15 downto 8);
+    alias a : unsigned(7 downto 0) is sensor_pixeldata_cur(7 downto 0);
     
     
     -- Delta signals (as signed)
@@ -91,9 +91,27 @@ begin
 
     sensor_re <= reg0(0);
     reg1 <= sensor_pixeldata;
+    sensor_pixeldata_cur <= unsigned(reg1);
     -- reg2 <= (0 => sensor_first, others => '0');
     -- reg2 <= x"00" & x"08" & x"08" & "0000000" & sensor_first;
     reg2 <= x"00" & x"4B" & x"32" & "0000000" & sensor_first;
+    
+--    r_prev <= sensor_pixeldata_prev(31 downto 24);
+--    g_prev <= sensor_pixeldata_prev(23 downto 16);
+--    b_prev <= sensor_pixeldata_prev(15 downto 8);
+--    a_prev <= sensor_pixeldata_prev(7 downto 0);
+    
+--    r <= sensor_pixeldata_cur(31 downto 24);
+--    g <= sensor_pixeldata_cur(23 downto 16);
+--    b <= sensor_pixeldata_cur(15 downto 8);
+--    a <= sensor_pixeldata_cur(7 downto 0);
+    
+    dr <= signed('0' & r) - signed('0' & r_prev);
+    dg <= signed('0' & g) - signed('0' & g_prev);
+    db <= signed('0' & b) - signed('0' & b_prev);
+    
+    
+    condition_met <= (dr >= -2) and (dr <= 1) and  (dg >= -2) and (dg <= 1) and (db >= -2) and (db <= 1);
 
 
     -------------------------------------------------------------------------------
@@ -109,6 +127,7 @@ begin
                     if iface_we_i = '1' then 
                         if targeted_register = "000000000000000000" then 
                             reg0 <= iface_di_i;
+                            sensor_pixeldata_prev <= sensor_pixeldata_cur;
                         end if;
                     end if;
                 end if;
@@ -135,37 +154,19 @@ begin
     end process;
 
 
-    PRO: process(clock_i)
+    PRO: process(clock_i, sensor_pixeldata, sensor_pixeldata_prev, dr, dg, dg, condition_met)
     begin
-    if rising_edge (clock_i) then
-            r_prev <= sensor_pixeldata_prev(31 downto 24);
-            g_prev <= sensor_pixeldata_prev(23 downto 16);
-            b_prev <= sensor_pixeldata_prev(15 downto 8);
-            a_prev <= sensor_pixeldata_prev(7 downto 0);
-            
-            r <= sensor_pixeldata(31 downto 24);
-            g <= sensor_pixeldata(23 downto 16);
-            b <= sensor_pixeldata(15 downto 8);
-            a <= sensor_pixeldata(7 downto 0);
-            
-            dr <= signed('0' & r) - signed('0' & r_prev);
-            dg <= signed('0' & g) - signed('0' & g_prev);
-            db <= signed('0' & b) - signed('0' & b_prev);
-            
-            condition_met <= (a = a_prev) and (dr >= -2) and (dr <= 1) and  (dg >= -2) and (dg <= 1) and (db >= -2) and (db <= 1);
-            
+    if rising_edge(clock_i) then
             if reset = '1' then
                 reg3 <= (others => '0');
-            elsif condition_met then
-                reg3 <= "01" & 
-                      std_logic_vector(resize(unsigned(dr + 2), 2)) & 
-                      std_logic_vector(resize(unsigned(dg + 2), 2)) & 
-                      std_logic_vector(resize(unsigned(db + 2), 2));
+            elsif condition_met then 
+                reg3 <= (31 downto 8 => '0') & "01" & 
+                std_logic_vector(resize(unsigned(dr + 2), 2)) & 
+                std_logic_vector(resize(unsigned(dg + 2), 2)) & 
+                std_logic_vector(resize(unsigned(db + 2), 2));
             else
                 reg3 <= (others => '0');
             end if;
-            
-            sensor_pixeldata_prev <= sensor_pixeldata;
         end if;
     end process;
 
